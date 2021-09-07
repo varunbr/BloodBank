@@ -1,0 +1,115 @@
+﻿
+https://www.json-generator.com/
+
+Generate Users Male
+
+[
+  '{{repeat(50)}}',
+  {
+    Name: '{{firstName("male")}} {{surname()}}',
+    UserName: function(){ return this.Name.split(" ")[0]; },
+    Gender: 'Male',
+    DateOfBirth: '{{date(new Date(1980,0,1), new Date(2000, 11, 31), "YYYY-MM-dd")}}',
+    BloodGroup: '{{random("Ap", "An", "Bp", "Bn", "ABp", "ABn", "Op", "On")}}',
+    Address: {
+      Area:'{{random("Electronic City", "Kengeri","Koramangala","Manyata Tech Park","Marathahalli","Whitefield","Indiranagar","Jayanagar")}}',
+      City: '{{random("Bengaluru","Mumbai","Kolar","Hydrabad")}}',
+      State:'{{random("Karnataka","Maharashtra","Karnataka","Delhi")}}',
+      Country: '{{random("India","Japan","United States")}}',
+      PostalCode: function(){
+        var items = ["560019","560020","560021","563114","563101"];
+        return items[Math.floor(Math.random()*items.length)];
+      }
+    },
+    Email: function(){ return this.UserName.toLowerCase() + "@mail.com"; },
+    PhoneNumber:  function(){
+      	var rand = Math.floor(Math.random() * 2000000000 + 8000000000);
+        return '+91' + rand.toString();
+      },
+    LastActive: '{{date(new Date(2015,0,1), new Date(2020, 11, 31), "YYYY-MM-dd")}}',
+    Photo:{
+      Url:function(num) {
+          return 'https://randomuser.me/api/portraits/men/' + num.integer(1,99) + '.jpg';
+        }
+    }
+  }
+]
+
+Generate Users Female
+
+[
+  '{{repeat(50)}}',
+  {
+    Name: '{{firstName("female")}} {{surname()}}',
+    UserName: function(){ return this.Name.split(" ")[0]; },
+    Gender: 'Female',
+    DateOfBirth: '{{date(new Date(1980,0,1), new Date(2000, 11, 31), "YYYY-MM-dd")}}',
+    BloodGroup: '{{random("Ap", "An", "Bp", "Bn", "ABp", "ABn", "Op", "On")}}',
+    Address: {
+      Area:'{{random("Electronic City", "Kengeri","Koramangala","Manyata Tech Park","Marathahalli","Whitefield","Indiranagar","Jayanagar")}}',
+      City: '{{random("Bengaluru","Mumbai","Kolar","Hydrabad")}}',
+      State:'{{random("Karnataka","Maharashtra","Karnataka","Delhi")}}',
+      Country: '{{random("India","Japan","United States")}}',
+      PostalCode: function(){
+        var items = ["560019","560020","560021","563114","563101"];
+        return items[Math.floor(Math.random()*items.length)];
+      }
+    },
+    Email: function(){ return this.UserName.toLowerCase() + "@mail.com"; },
+    PhoneNumber:  function(){
+      	var rand = Math.floor(Math.random() * 2000000000 + 8000000000);
+        return '+91' + rand.toString();
+      },
+    LastActive: '{{date(new Date(2015,0,1), new Date(2020, 11, 31), "YYYY-MM-dd")}}',
+    Photo:{
+      Url:function(num) {
+          return 'https://randomuser.me/api/portraits/women/' + num.integer(1,99) + '.jpg';
+        }
+    }
+  }
+]
+
+Generate Bank
+
+[
+  '{{repeat(50)}}',
+  {
+    Name: '{{random("Nimhans Hospital","Jayadeva Institute of Cardiology","Victoria Hospital","Manipal Hospital","Apollo Hospital","M.S. Ramaiah Memorial Hospital","Fortis Hospital","Rainbow Hospital","Apollo Speciality Hospital","Columbia Asia Referral Hospital","Kokilaben Dhirubhai Ambani Hospital","Narayana Multispeciality Hospital","Nanavati Hospital","Wockhardt Hospital","MaxCure Hospital","Manipal Hospital","Victoria Hospital")}}',
+    PhoneNumber:  function(){
+      	var rand = Math.floor(Math.random() * 2000000000 + 8000000000);
+        return '+91' + rand.toString();
+      },
+    Email: function(){ return this.Name.split(" ")[0].toLowerCase() + "@mail.com"; },
+    BloodGroup: {
+      Ap:function(){return Math.floor(Math.random() * 50);},
+      An:function(){return Math.floor(Math.random() * 50);},
+      Bp:function(){return Math.floor(Math.random() * 50);},
+      Bn:function(){return Math.floor(Math.random() * 50);},
+      ABp:function(){return Math.floor(Math.random() * 50);},
+      ABn:function(){return Math.floor(Math.random() * 50);},
+      Op:function(){return Math.floor(Math.random() * 50);},
+      On:function(){return Math.floor(Math.random() * 50);}
+    },
+    Address: {
+      Area:'{{random("Electronic City", "Kengeri","Koramangala","Manyata Tech Park","Marathahalli","Whitefield","Indiranagar","Jayanagar")}}',
+      City: '{{random("Bengaluru","Mumbai","Kolar","Hydrabad")}}',
+      State:'{{random("Karnataka","Maharashtra","Karnataka","Delhi")}}',
+      Country: '{{random("India","Japan","United States")}}',
+      PostalCode: function(){
+        var items = ["560019","560020","560021","563114","563101"];
+        return items[Math.floor(Math.random()*items.length)];
+      }
+    },
+    LastUpdated: '{{date(new Date(2020,0,1), new Date(2020, 12, 30), "YYYY-MM-dd")}}',
+    Moderators:[
+      {
+        User:{
+      UserName:'{{random("admin","bob","john","lynn","dora")}}'
+    }
+      }],
+    Website:function(){ return "https://www." +this.Name.split(" ")[0].toLowerCase() + ".com"; },
+    Photo:{
+      Url:'{{random("https://image.freepik.com/free-vector/medical-service-logos-vector-set_53876-62795.jpg","https://image.freepik.com/free-vector/heart-care-logo_1032-146.jpg","https://image.freepik.com/free-vector/donate-blood-isolated-logo_1025-350.jpg","https://image.freepik.com/free-vector/give-blood-background_1057-1029.jpg","https://image.freepik.com/free-vector/give-blood-background_1057-1029.jpg","https://image.freepik.com/free-photo/blood-drop-paper-medical-cross-health-diy-element_53876-128924.jpg","https://image.freepik.com/free-psd/blood-donation-flyer-template-design_23-2149087897.jpg")}}'
+    }
+  }
+]

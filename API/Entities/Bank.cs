@@ -13,9 +13,7 @@ namespace API.Entities
         public string Website { get; set; }
         public DateTime LastUpdated { get; set; }
         public Photo Photo { get; set; }
-        public int AdminUserId { get; set; }
-        public AppUser Admin { get; set; }
         public BloodGroup BloodGroup { get; set; }
-        public ICollection<AppUserRole> UserRoles { get; set; }
+        public ICollection<Moderator> Moderators { get; set; }
     }
 }

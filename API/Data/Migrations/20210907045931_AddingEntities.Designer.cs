@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210906015032_AddingEntities")]
+    [Migration("20210907045931_AddingEntities")]
     partial class AddingEntities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,6 +41,9 @@ namespace API.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PostalCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UserId")
@@ -178,12 +181,7 @@ namespace API.Data.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("BankId")
-                        .HasColumnType("int");
-
                     b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("BankId");
 
                     b.HasIndex("RoleId");
 
@@ -196,9 +194,6 @@ namespace API.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AdminUserId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -216,8 +211,6 @@ namespace API.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AdminUserId");
 
                     b.ToTable("Banks");
                 });
@@ -262,6 +255,24 @@ namespace API.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("BloodGroups");
+                });
+
+            modelBuilder.Entity("API.Entities.Moderator", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BankId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "BankId");
+
+                    b.HasIndex("BankId");
+
+                    b.ToTable("Moderator");
                 });
 
             modelBuilder.Entity("API.Entities.Photo", b =>
@@ -401,12 +412,6 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.AppUserRole", b =>
                 {
-                    b.HasOne("API.Entities.Bank", "Bank")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("BankId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("API.Entities.AppRole", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
@@ -419,22 +424,9 @@ namespace API.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Bank");
-
                     b.Navigation("Role");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("API.Entities.Bank", b =>
-                {
-                    b.HasOne("API.Entities.AppUser", "Admin")
-                        .WithMany()
-                        .HasForeignKey("AdminUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Admin");
                 });
 
             modelBuilder.Entity("API.Entities.BloodGroup", b =>
@@ -446,6 +438,25 @@ namespace API.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Bank");
+                });
+
+            modelBuilder.Entity("API.Entities.Moderator", b =>
+                {
+                    b.HasOne("API.Entities.Bank", "Bank")
+                        .WithMany("Moderators")
+                        .HasForeignKey("BankId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.AppUser", "User")
+                        .WithMany("Moderates")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bank");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("API.Entities.Photo", b =>
@@ -510,6 +521,8 @@ namespace API.Data.Migrations
                 {
                     b.Navigation("Address");
 
+                    b.Navigation("Moderates");
+
                     b.Navigation("Photo");
 
                     b.Navigation("UserRoles");
@@ -521,9 +534,9 @@ namespace API.Data.Migrations
 
                     b.Navigation("BloodGroup");
 
-                    b.Navigation("Photo");
+                    b.Navigation("Moderators");
 
-                    b.Navigation("UserRoles");
+                    b.Navigation("Photo");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,5 @@
 using API.Data;
+using API.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,13 @@ namespace API
             {
                 options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddIdentity<AppUser, AppRole>(opt =>
+                {
+                    opt.Password.RequireNonAlphanumeric = false;
+                })
+                .AddEntityFrameworkStores<DataContext>();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -45,6 +53,8 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
