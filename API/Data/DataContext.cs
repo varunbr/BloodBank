@@ -28,7 +28,6 @@ namespace API.Data
                 .WithOne(b => b.Address)
                 .HasForeignKey<Address>(a => a.BankId)
                 .OnDelete(DeleteBehavior.Cascade);
-
             builder.Entity<Address>()
                 .HasOne(a => a.User)
                 .WithOne(u => u.Address)
@@ -45,23 +44,22 @@ namespace API.Data
                 .WithOne(ur => ur.User)
                 .HasForeignKey(ur => ur.UserId);
 
-            builder.Entity<Bank>()
-                .HasMany(b => b.UserRoles)
-                .WithOne(ur => ur.Bank)
-                .IsRequired();
-
-            builder.Entity<Bank>()
-                .HasOne(b => b.Admin)
-                .WithMany()
-                .HasForeignKey(b => b.AdminUserId)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Moderator>()
+                .HasKey(k => new { k.UserId, k.BankId });
+            builder.Entity<Moderator>()
+                .HasOne(m => m.User)
+                .WithMany(u => u.Moderates)
+                .HasForeignKey(m => m.UserId);
+            builder.Entity<Moderator>()
+                .HasOne(m => m.Bank)
+                .WithMany(b => b.Moderators)
+                .HasForeignKey(m => m.BankId);
 
             builder.Entity<Photo>()
                 .HasOne(p => p.User)
                 .WithOne(u => u.Photo)
                 .HasForeignKey<Photo>(p => p.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
-
             builder.Entity<Photo>()
                 .HasOne(p => p.Bank)
                 .WithOne(b => b.Photo)
