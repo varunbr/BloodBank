@@ -18,7 +18,15 @@ namespace API.Helpers
             CreateMap<Address, MemberDto>();
             CreateMap<Photo, MemberDto>();
             CreateMap<AppUser, MemberDto>()
-                .IncludeMembers(s => s.Address,s=>s.Photo);
+                .IncludeMembers(s => s.Address, s => s.Photo);
+
+            CreateMap<Address, BankDto>();
+            CreateMap<Photo, BankDto>();
+            CreateMap<BloodGroup, BloodGroupDto>();
+            CreateMap<Bank, BankDto>()
+                .IncludeMembers(s => s.Address, s => s.Photo)
+                .ForMember(dest => dest.BloodGroup, 
+                    opt => opt.MapFrom(src => src.BloodGroup));
         }
     }
 }

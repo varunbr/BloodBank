@@ -47,5 +47,29 @@ namespace API.Extensions
             };
             return query;
         }
+
+        public static IQueryable<Bank> BuildQuery(this IQueryable<Bank> query, BankParams bankParams)
+        {
+            if (!string.IsNullOrEmpty(bankParams.Name))
+            {
+                query = query.Where(b => b.Name.Contains(bankParams.Name));
+            }
+            if (!string.IsNullOrEmpty(bankParams.Address))
+            {
+                var items = bankParams.Address.Split(" ");
+                query = query.Where(b =>
+                    items.Contains(b.Address.Area) ||
+                    items.Contains(b.Address.City) ||
+                    items.Contains(b.Address.State) ||
+                    items.Contains(b.Address.Country) ||
+                    items.Contains(b.Address.PostalCode));
+            }
+
+            query = bankParams.OrderBy switch
+            {
+                _ => query.OrderByDescending(b => b.LastUpdated)
+            };
+            return query;
+        }
     }
 }
