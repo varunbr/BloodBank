@@ -14,6 +14,11 @@ namespace API.Helpers
                     opt => opt.MapFrom(src => src))
                 .ForMember(dest => dest.UserName,
                     opt => opt.MapFrom(src => src.UserName.ToLower()));
+
+            CreateMap<Address, MemberDto>();
+            CreateMap<Photo, MemberDto>();
+            CreateMap<AppUser, MemberDto>()
+                .IncludeMembers(s => s.Address,s=>s.Photo);
         }
     }
 }
