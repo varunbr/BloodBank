@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace API.DTOs
 {
@@ -16,6 +17,6 @@ namespace API.DTOs
         public string Website { get; set; }
         public DateTime LastUpdated { get; set; }
         public string PhotoUrl { get; set; }
-        public BloodGroupDto BloodGroup { get; set; }
+        public ICollection<BloodGroupDto> BloodGroups { get; set; }
     }
 }

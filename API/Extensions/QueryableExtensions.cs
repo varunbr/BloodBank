@@ -9,7 +9,7 @@ namespace API.Extensions
     {
         public static IQueryable<AppUser> BuildQuery(this IQueryable<AppUser> query, UserParams userParams)
         {
-            query = query.Where(u => u.UserName != userParams.CurrentUserName);
+            query = query.Where(u => u.UserName != userParams.CurrentUserName && u.Available);
 
             var genders = new[] { "male", "female" };
             if (genders.Contains(userParams.Gender, StringComparer.OrdinalIgnoreCase))
@@ -54,6 +54,7 @@ namespace API.Extensions
             {
                 query = query.Where(b => b.Name.Contains(bankParams.Name));
             }
+
             if (!string.IsNullOrEmpty(bankParams.Address))
             {
                 var items = bankParams.Address.Split(" ");
@@ -63,6 +64,13 @@ namespace API.Extensions
                     items.Contains(b.Address.State) ||
                     items.Contains(b.Address.Country) ||
                     items.Contains(b.Address.PostalCode));
+            }
+
+            if (!string.IsNullOrEmpty(bankParams.BloodGroup))
+            {
+                query = query.Where(b =>
+                    b.BloodGroups.Any(bg =>
+                        bg.Group == bankParams.BloodGroup && bg.Value > 0));
             }
 
             query = bankParams.OrderBy switch

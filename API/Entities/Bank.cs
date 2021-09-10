@@ -13,7 +13,7 @@ namespace API.Entities
         public string Website { get; set; }
         public DateTime LastUpdated { get; set; }
         public Photo Photo { get; set; }
-        public BloodGroup BloodGroup { get; set; }
+        public ICollection<BloodGroup> BloodGroups { get; set; }
         public ICollection<Moderator> Moderators { get; set; }
     }
 }
