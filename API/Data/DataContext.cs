@@ -68,8 +68,8 @@ namespace API.Data
 
             builder.Entity<BloodGroup>()
                 .HasOne(bg => bg.Bank)
-                .WithOne(b => b.BloodGroup)
-                .HasForeignKey<BloodGroup>(bg => bg.BankId);
+                .WithMany(b => b.BloodGroups)
+                .HasForeignKey(b => b.BankId);
         }
     }
 }

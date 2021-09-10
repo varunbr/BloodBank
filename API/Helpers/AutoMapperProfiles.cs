@@ -25,8 +25,8 @@ namespace API.Helpers
             CreateMap<BloodGroup, BloodGroupDto>();
             CreateMap<Bank, BankDto>()
                 .IncludeMembers(s => s.Address, s => s.Photo)
-                .ForMember(dest => dest.BloodGroup, 
-                    opt => opt.MapFrom(src => src.BloodGroup));
+                .ForMember(dest => dest.BloodGroups, 
+                    opt => opt.MapFrom(src => src.BloodGroups));
         }
     }
 }

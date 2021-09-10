@@ -33,6 +33,7 @@ namespace API.Data.Migrations
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastActive = table.Column<DateTime>(type: "datetime2", nullable: false),
                     BloodGroup = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Available = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -213,14 +214,8 @@ namespace API.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Ap = table.Column<int>(type: "int", nullable: false),
-                    An = table.Column<int>(type: "int", nullable: false),
-                    Bp = table.Column<int>(type: "int", nullable: false),
-                    Bn = table.Column<int>(type: "int", nullable: false),
-                    Op = table.Column<int>(type: "int", nullable: false),
-                    On = table.Column<int>(type: "int", nullable: false),
-                    ABp = table.Column<int>(type: "int", nullable: false),
-                    ABn = table.Column<int>(type: "int", nullable: false),
+                    Group = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Value = table.Column<int>(type: "int", nullable: false),
                     BankId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -343,8 +338,7 @@ namespace API.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_BloodGroups_BankId",
                 table: "BloodGroups",
-                column: "BankId",
-                unique: true);
+                column: "BankId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Moderator_BankId",

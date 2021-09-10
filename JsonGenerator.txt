@@ -11,6 +11,7 @@ Generate Users Male
     Gender: 'Male',
     DateOfBirth: '{{date(new Date(1980,0,1), new Date(2000, 11, 31), "YYYY-MM-dd")}}',
     BloodGroup: '{{random("Ap", "An", "Bp", "Bn", "ABp", "ABn", "Op", "On")}}',
+    Available:'{{random(true,false,true,false,true)}}',
     Address: {
       Area:'{{random("Electronic City", "Kengeri","Koramangala","Manyata Tech Park","Marathahalli","Whitefield","Indiranagar","Jayanagar")}}',
       City: '{{random("Bengaluru","Mumbai","Kolar","Hydrabad")}}',
@@ -45,6 +46,7 @@ Generate Users Female
     Gender: 'Female',
     DateOfBirth: '{{date(new Date(1980,0,1), new Date(2000, 11, 31), "YYYY-MM-dd")}}',
     BloodGroup: '{{random("Ap", "An", "Bp", "Bn", "ABp", "ABn", "Op", "On")}}',
+    Available:'{{random(true,false,true,false,true)}}',
     Address: {
       Area:'{{random("Electronic City", "Kengeri","Koramangala","Manyata Tech Park","Marathahalli","Whitefield","Indiranagar","Jayanagar")}}',
       City: '{{random("Bengaluru","Mumbai","Kolar","Hydrabad")}}',
@@ -80,16 +82,40 @@ Generate Bank
         return '+91' + rand.toString();
       },
     Email: function(){ return this.Name.split(" ")[0].toLowerCase() + "@mail.com"; },
-    BloodGroup: {
-      Ap:function(){return Math.floor(Math.random() * 50);},
-      An:function(){return Math.floor(Math.random() * 50);},
-      Bp:function(){return Math.floor(Math.random() * 50);},
-      Bn:function(){return Math.floor(Math.random() * 50);},
-      ABp:function(){return Math.floor(Math.random() * 50);},
-      ABn:function(){return Math.floor(Math.random() * 50);},
-      Op:function(){return Math.floor(Math.random() * 50);},
-      On:function(){return Math.floor(Math.random() * 50);}
-    },
+    BloodGroups:[
+      {
+        "Group":"Op",
+        "Value":function(){return Math.floor(Math.random() * 50);}
+      },
+      {
+        "Group":"On",
+        "Value":function(){return Math.floor(Math.random() * 50);}
+      },
+      {
+        "Group":"Ap",
+        "Value":function(){return Math.floor(Math.random() * 50);}
+      },
+      {
+        "Group":"An",
+        "Value":function(){return Math.floor(Math.random() * 50);}
+      },
+      {
+        "Group":"Bp",
+        "Value":function(){return Math.floor(Math.random() * 50);}
+      },
+      {
+        "Group":"Bn",
+        "Value":function(){return Math.floor(Math.random() * 50);}
+      },
+      {
+        "Group":"ABp",
+        "Value":function(){return Math.floor(Math.random() * 50);}
+      },
+      {
+        "Group":"ABn",
+        "Value":function(){return Math.floor(Math.random() * 50);}
+      }
+    ],
     Address: {
       Area:'{{random("Electronic City", "Kengeri","Koramangala","Manyata Tech Park","Marathahalli","Whitefield","Indiranagar","Jayanagar")}}',
       City: '{{random("Bengaluru","Mumbai","Kolar","Hydrabad")}}',

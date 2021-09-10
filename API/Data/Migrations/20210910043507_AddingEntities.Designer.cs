@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210907045931_AddingEntities")]
+    [Migration("20210910043507_AddingEntities")]
     partial class AddingEntities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,6 +100,9 @@ namespace API.Data.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Available")
+                        .HasColumnType("bit");
 
                     b.Property<string>("BloodGroup")
                         .HasColumnType("nvarchar(max)");
@@ -222,37 +225,18 @@ namespace API.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ABn")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ABp")
-                        .HasColumnType("int");
-
-                    b.Property<int>("An")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Ap")
-                        .HasColumnType("int");
-
                     b.Property<int>("BankId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Bn")
-                        .HasColumnType("int");
+                    b.Property<string>("Group")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Bp")
-                        .HasColumnType("int");
-
-                    b.Property<int>("On")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Op")
+                    b.Property<int>("Value")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BankId")
-                        .IsUnique();
+                    b.HasIndex("BankId");
 
                     b.ToTable("BloodGroups");
                 });
@@ -432,8 +416,8 @@ namespace API.Data.Migrations
             modelBuilder.Entity("API.Entities.BloodGroup", b =>
                 {
                     b.HasOne("API.Entities.Bank", "Bank")
-                        .WithOne("BloodGroup")
-                        .HasForeignKey("API.Entities.BloodGroup", "BankId")
+                        .WithMany("BloodGroups")
+                        .HasForeignKey("BankId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -532,7 +516,7 @@ namespace API.Data.Migrations
                 {
                     b.Navigation("Address");
 
-                    b.Navigation("BloodGroup");
+                    b.Navigation("BloodGroups");
 
                     b.Navigation("Moderators");
 
