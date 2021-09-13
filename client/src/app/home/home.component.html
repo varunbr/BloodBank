@@ -1,7 +1,7 @@
 <div class="mt-5">
     <carousel>
         <slide>
-          <div class="text-center py-5 bg-white">
+          <div class="text-center py-5">
             <h2>There is a hope of life to someone in your blood donation.</h2>
             <div class="lead">
               <p>Become hero in someone's life by donating blood or finding donor...!</p>
@@ -9,7 +9,7 @@
           </div>
         </slide>
         <slide>
-          <div class="text-center py-5 bg-white">
+          <div class="text-center py-5">
             <h2>We make a living by what we get. We make a life by what we give.</h2>
             <div class="lead">
               <p>Donate blood and be the reason for a smile on someone’s face.</p>
@@ -17,7 +17,7 @@
           </div>
         </slide>
         <slide>
-          <div class="text-center py-5 bg-white">
+          <div class="text-center py-5">
             <h2>Tears of a mother cannot save her Child. But your Blood can.</h2>
             <div class="lead">
               <p>You can’t buy a life for someone with money, but you can save a life of someone by donating blood.</p>
@@ -29,16 +29,16 @@
 
 <div class="d-flex justify-content-center row-sm-12 mt-5">
     <p class="text-center">
-        Find the matching donor or blood bank you are looking for...!<span *ngIf="!loggedIn"> all you need to do is sing up!</span>
+        Find the matching donor or blood bank you are looking for...!<span *ngIf="!(accountService.user$ | async)"> all you need to do is sing up!</span>
     </p>
 </div>
 <div class="d-flex justify-content-center row-sm-12">
-    <div *ngIf="!loggedIn">        
-        <button class="btn btn-primary mx-md-2 my-2" routerLink='/login' type="button">Login</button>
-        <button class="btn btn-info mx-md-2 my-2" routerLink='/register' type="button">Register</button>
+    <div *ngIf="!(accountService.user$ | async)">        
+        <button class="btn btn-primary mx-2 my-2" routerLink='/login' type="button">Login</button>
+        <button class="btn btn-info mx-2 my-2" routerLink='/register' type="button">Register</button>
     </div>
-    <div *ngIf="loggedIn">        
-        <button class="btn btn-primary mx-md-2 my-2" routerLink='/donors' type="button">Find Donors</button>
-        <button class="btn btn-info mx-md-2 my-2" routerLink='/banks' type="button">Find Blood Banks</button>
+    <div *ngIf="accountService.user$ | async">        
+        <button class="btn btn-primary mx-2 my-2" routerLink='/donors' type="button">Find Donors</button>
+        <button class="btn btn-info mx-2 my-2" routerLink='/banks' type="button">Find Blood Banks</button>
     </div>
 </div>

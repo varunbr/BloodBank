@@ -1,24 +1,26 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AccountService } from '../_services/account.service';
 
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.css']
+  styleUrls: ['./nav.component.css'],
 })
 export class NavComponent implements OnInit {
-
   isCollapsed = true;
-  loggedIn = false;
-  constructor() { }
+  constructor(public accountService: AccountService, public router: Router) {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  logout() {
+    this.accountService.logout();
   }
 
-  login(){
-    this.loggedIn = true;
-  }
-
-  logout(){
-    this.loggedIn = false;
+  inAuthPage() {
+    if (this.router.url === '/login' || this.router.url === '/register') {
+      return true;
+    }
+    return false;
   }
 }
