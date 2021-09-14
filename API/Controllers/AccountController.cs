@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
@@ -30,8 +32,13 @@ namespace API.Controllers
         {
             if (await UserNameExist(registerDto.UserName))
                 return BadRequest("Username is taken.");
+            if (!Util.GetGenderList().Contains(registerDto.Gender))
+                return BadRequest("Invalid gender.");
+            if (!Util.GetBloodGroupList().Contains(registerDto.BloodGroup))
+                return BadRequest("Invalid blood group.");
 
             var user = _mapper.Map<AppUser>(registerDto);
+            user.UserName = registerDto.UserName.ToLower();
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
             if (!result.Succeeded) return BadRequest(result.Errors);
