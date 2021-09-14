@@ -1,0 +1,6 @@
+<div class="form-group">
+    <input [class.is-invalid]="ngControl.invalid && ngControl.touched" bsDatepicker class="form-control"
+        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',containerClass:'theme-red' }" [formControl]="ngControl.control" placeholder="{{label}}">
+    <div class="invalid-feedback" *ngIf="ngControl.control.errors?.required">Please enter a {{label}}.</div>
+    <div class="invalid-feedback" *ngIf="ngControl.control.errors?.bsDate?.invalid">Please enter valid {{label}}.</div>
+</div>

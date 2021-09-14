@@ -25,5 +25,15 @@ namespace API.Helpers
             }
             return new[] { group };
         }
+
+        public static IEnumerable<string> GetGenderList()
+        {
+            return new[] { "male", "female" };
+        }
+
+        public static IEnumerable<string> GetBloodGroupList()
+        {
+            return new[] { "On", "Op", "An", "Ap", "Bn", "Bp", "ABn", "ABp" };
+        }
     }
 }

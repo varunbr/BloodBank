@@ -1,1 +1,77 @@
-<p>register works!</p>
+<section>
+  <div class="container py-5">
+    <div class="row d-flex justify-content-center align-items-center">
+      <div class="col-12 col-md-8 col-lg-10 col-xl-8">
+        <div class="card shadow-2-strong" style="border-radius: 1rem;">
+          <div class="card-body p-5">
+
+            <h3 class="mb-5  text-center">Create account</h3>
+
+            <div class="alert alert-dismissible alert-danger" *ngIf="validationErrors.length">
+              <div *ngFor="let item of validationErrors">{{item}}</div>
+            </div>
+
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" autocomplete="off">
+              <div class="row">
+                <app-text-input class="col-lg-6" [label]="'Name'" [formControl]="registerForm.get('name')">
+                </app-text-input>
+                <app-text-input class="col-lg-6" [label]="'UserName'" [formControl]="registerForm.get('userName')">
+                </app-text-input>
+                <app-text-input class="col-lg-6" [type]="'password'" [label]="'Password'"
+                  [formControl]="registerForm.get('password')"></app-text-input>
+                <app-text-input class="col-lg-6" [type]="'password'" [label]="'Confirm Password'"
+                  [formControl]="registerForm.get('confirmPassword')"></app-text-input>
+                <app-text-input class="col-lg-6" [label]="'Phone Number'"
+                  [formControl]="registerForm.get('phoneNumber')"></app-text-input>
+                <app-text-input class="col-lg-6" [type]="'email'" [label]="'Email'"
+                  [formControl]="registerForm.get('email')"></app-text-input>
+                <app-text-input class="col-lg-6" [label]="'Area'" [formControl]="registerForm.get('area')">
+                </app-text-input>
+                <app-text-input class="col-lg-6" [label]="'City'" [formControl]="registerForm.get('city')">
+                </app-text-input>
+                <app-text-input class="col-lg-6" [label]="'State'" [formControl]="registerForm.get('state')">
+                </app-text-input>
+                <app-text-input class="col-lg-6" [label]="'Country'" [formControl]="registerForm.get('country')">
+                </app-text-input>
+                <app-text-input class="col-lg-6" [label]="'Postal Code'" [formControl]="registerForm.get('postalCode')">
+                </app-text-input>
+                <app-date-input class="col-lg-6" [label]="'Date of birth'"
+                  [formControl]="registerForm.get('dateOfBirth')"></app-date-input>
+                <div class="form-group col-lg-6">
+                  <select class="form-control form-select"
+                    [class.is-invalid]="registerForm.get('bloodGroup').invalid && registerForm.get('bloodGroup').touched"
+                    id="bloodGroup" [formControl]="registerForm.get('bloodGroup')">
+                    <option value="" selected hidden disabled>Blood group</option>
+                    <option *ngFor="let item of bloodGroupList" value="{{item.value}}">{{item.name}}</option>
+                  </select>
+                  <div class="invalid-feedback" *ngIf="registerForm.get('bloodGroup').invalid">Please select blood
+                    group.</div>
+                </div>
+                <div class="form-group col-lg-6">
+                  <label class="control-label">Gender: </label>
+                  <label class="form-check-label ml-5">
+                    <input type="radio" class="form-check-input" formControlName='gender' value="male" checked="">
+                    Male
+                  </label>
+                  <label class="form-check-label ml-5">
+                    <input type="radio" class="form-check-input" formControlName='gender' value="female">
+                    Female
+                  </label>
+                </div>
+                <div class="col-lg-6">
+                  <button class="btn btn-primary btn-lg btn-block offset-lg-6" [disabled]="registerForm.invalid"
+                    type="submit">Register</button>
+                </div>
+              </div>
+            </form>
+            <hr class="my-4">
+            <h6 class="form-label text-center">Already have an account?</h6>
+            <div class="col-lg-6">
+              <button class="btn btn-info btn-lg btn-block offset-lg-6" routerLink="/login" type="button">Login</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
