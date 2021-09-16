@@ -9,7 +9,7 @@
         <div id="collapseBasic" [collapse]="isCollapsed" class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
                 <li *ngIf="accountService.user$ | async" class="nav-item">
-                    <a class="nav-link" href="#" routerLink='/donots'>Donors</a>
+                    <a class="nav-link" href="#" routerLink='/donors'>Donors</a>
                 </li>
                 <li *ngIf="accountService.user$ | async" class="nav-item">
                     <a class="nav-link" href="#" routerLink='/banks'>Banks</a>
@@ -25,9 +25,12 @@
                 </li>
             </ul>
             
-            <div *ngIf="accountService.user$ | async" class="nav-item dropdown" dropdown>
+            <div *ngIf="(accountService.user$ | async) as user" class="nav-item dropdown" dropdown>
                 <a class="nav-link text-light dropdown-toggle" dropdownToggle id="dropdownId" data-toggle="dropdown"
-                 aria-haspopup="true" aria-expanded="false">User</a>
+                 aria-haspopup="true" aria-expanded="false">
+                 <img src="{{user.photoUrl || '../../../assets/images/profile.png'}}" style="max-height: 5vmin;" class="rounded-circle"/>
+                 {{user.name || user.userName}}
+                </a>
                 <div class="dropdown-menu mt-2" *dropdownMenu aria-labelledby="dropdownId">
                     <a class="dropdown-item">Edit Profile</a>
                     <a class="dropdown-item" (click)="logout()">Logout</a>

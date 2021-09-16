@@ -15,6 +15,12 @@ import { TextInputComponent } from './forms/text-input/text-input.component';
 import { DateInputComponent } from './forms/date-input/date-input.component';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { LoadingInterceptor } from './interceptors/loading.interceptor';
+import { DonorsListComponent } from './donors/donors-list/donors-list.component';
+import { BanksListComponent } from './banks/banks-list/banks-list.component';
+import { ModerateComponent } from './moderator/moderate/moderate.component';
+import { AdminComponent } from './moderator/admin/admin.component';
+import { AboutComponent } from './about/about.component';
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -25,6 +31,11 @@ import { LoadingInterceptor } from './interceptors/loading.interceptor';
     RegisterComponent,
     TextInputComponent,
     DateInputComponent,
+    DonorsListComponent,
+    BanksListComponent,
+    ModerateComponent,
+    AdminComponent,
+    AboutComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,6 +49,7 @@ import { LoadingInterceptor } from './interceptors/loading.interceptor';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })

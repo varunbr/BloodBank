@@ -1,0 +1,13 @@
+<div class="row mt-4 justify-content-md-center">
+    <div class="col-6 col-md-4 col-lg-3 py-xl-4" *ngFor="let donor of donors">
+        <div class="card border-primary mb-3" style="border-radius:20%;max-width: 15rem;">
+            <div class="card-body d-flex align-items-center flex-column">
+              <div class="image"> <img src="{{donor.photoUrl || '../../../assets/images/profile.png'}}" style="max-height: 15vmin;" class="img-fluid rounded-circle"/></div>
+              <br>
+              <div style="font-size:3vmin"><span class="text-danger">{{donor.bloodGroup}}</span></div>
+              <div style="font-size:2.5vmin">Age: {{donor.age}}</div>
+              <button class="btn btn-primary" style="font-size:2.5vmin;border-radius: 12px;">{{donor.name}}</button>  
+            </div>     
+        </div>
+    </div>
+</div>

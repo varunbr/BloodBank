@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace API.Helpers
 {
@@ -8,20 +9,20 @@ namespace API.Helpers
         {
             switch (group)
             {
-                case "Op":
-                    return new[] { "On", "Op" };
-                case "An":
-                    return new[] { "On", "An" };
-                case "Ap":
-                    return new[] { "On", "Op", "An", "Ap" };
-                case "Bn":
-                    return new[] { "On", "Bn" };
-                case "Bp":
-                    return new[] { "On", "Op", "Bn", "Bp" };
-                case "ABn":
-                    return new[] { "On", "An", "Bn", "ABn" };
-                case "ABp":
-                    return new[] { "On", "Op", "An", "Ap", "Bn", "Bp", "ABn", "ABp" };
+                case "O+":
+                    return new[] { "O-", "O+" };
+                case "A-":
+                    return new[] { "O-", "A-" };
+                case "A+":
+                    return new[] { "O-", "O+", "A-", "A+" };
+                case "B-":
+                    return new[] { "O-", "B-" };
+                case "B+":
+                    return new[] { "O-", "O+", "B-", "B+" };
+                case "AB-":
+                    return new[] { "O-", "A-", "B-", "AB-" };
+                case "AB+":
+                    return new[] { "O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+" };
             }
             return new[] { group };
         }
@@ -33,7 +34,16 @@ namespace API.Helpers
 
         public static IEnumerable<string> GetBloodGroupList()
         {
-            return new[] { "On", "Op", "An", "Ap", "Bn", "Bp", "ABn", "ABp" };
+            return new[] { "O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+" };
+        }
+
+        public static int GetAge(DateTime dob)
+        {
+            var today = DateTime.Now;
+            var age = today.Year - dob.Year;
+            if (dob.Date > today.AddYears(-age).Date)
+                age--;
+            return age;
         }
     }
 }
