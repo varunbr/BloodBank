@@ -4,21 +4,23 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { TimeagoModule } from 'ngx-timeago';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    FontAwesomeModule,
     BsDropdownModule.forRoot(),
     BsDatepickerModule.forRoot(),
     PaginationModule.forRoot(),
+    ModalModule.forRoot(),
     CollapseModule.forRoot(),
     CarouselModule.forRoot(),
+    TimeagoModule.forRoot(),
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
     }),
@@ -29,10 +31,11 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     BsDatepickerModule,
     CollapseModule,
     CarouselModule,
-    FontAwesomeModule,
     ToastrModule,
     NgxSpinnerModule,
     PaginationModule,
+    ModalModule,
+    TimeagoModule,
   ],
 })
 export class SharedModule {}
