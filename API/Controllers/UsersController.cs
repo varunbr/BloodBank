@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
@@ -47,6 +48,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
         {
+            userParams.BloodGroup = HttpUtility.UrlDecode(userParams.BloodGroup);
             var users = await _userRepository.GetUsers(userParams);
             Response.AddPaginationHeader(users.PageNumber, users.PageSize, users.TotalPages, users.TotalCount);
             return Ok(users);

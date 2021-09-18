@@ -20,9 +20,9 @@ namespace API.Extensions
             var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
             var minDob = DateTime.Today.AddYears(-userParams.MaxAge);
 
-            if (userParams.MaxAge != 0)
+            if (userParams.MaxAge > 0)
                 query = query.Where(u => u.DateOfBirth >= minDob);
-            if (userParams.MinAge != 0)
+            if (userParams.MinAge > 0)
                 query = query.Where(u => u.DateOfBirth <= maxDob);
 
             if (!string.IsNullOrEmpty(userParams.BloodGroup))
