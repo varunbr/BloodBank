@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Donor } from 'src/app/_modals/donor';
 import { DonorParams } from 'src/app/_modals/donorParams';
 import { Pagination } from 'src/app/_modals/pagination';
 import { getBloodGroupList } from 'src/app/_modals/utility';
 import { DonorService } from 'src/app/_services/donor.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-donors-list',
@@ -18,8 +19,12 @@ export class DonorsListComponent implements OnInit {
   addressPlaceholderItems = ['Area', 'City', 'Postal Code', 'State', 'Country'];
   addressCurrentIndex = this.addressPlaceholderItems.length;
   addressPlaceholder = this.addressPlaceholderItems[0];
+  modalRef?: BsModalRef;
 
-  constructor(private donorService: DonorService) {
+  constructor(
+    private donorService: DonorService,
+    private modalService: BsModalService
+  ) {
     this.params = this.donorService.getDonorParams();
   }
 
@@ -56,5 +61,9 @@ export class DonorsListComponent implements OnInit {
   pageChanged(event) {
     this.params.pageNumber = event.page;
     this.loadDonors();
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, {});
   }
 }
