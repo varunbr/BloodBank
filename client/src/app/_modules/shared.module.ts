@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ToastrModule } from 'ngx-toastr';
@@ -15,6 +16,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     FontAwesomeModule,
     BsDropdownModule.forRoot(),
     BsDatepickerModule.forRoot(),
+    PaginationModule.forRoot(),
     CollapseModule.forRoot(),
     CarouselModule.forRoot(),
     ToastrModule.forRoot({
@@ -29,7 +31,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     CarouselModule,
     FontAwesomeModule,
     ToastrModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    PaginationModule,
   ],
 })
 export class SharedModule {}
