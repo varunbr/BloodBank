@@ -1,38 +1,37 @@
-<form #filterForm="ngForm" (ngSubmit)="applyFilter()" class="form-inline mt-3">
-    <div class="form-group p-2">
-        <label class="form-label mr-2" for="address">Address: </label>
-        <input type="text" class="form-control border-primary" style="width: 300px;" id="address"
+<form #filterForm="ngForm" (ngSubmit)="applyFilter()" class="form-inline mt-sm-3">
+    <div class="form-group px-1 p-sm-2">
+        <label class="col-form-label col-form-label-sm mr-2" for="address">Address: </label>
+        <input type="text" class="form-control form-control-sm border-primary" style="width: 300px;" id="address"
             [(ngModel)]="params.address" name="address" placeholder="Search by {{addressPlaceholder}}" />
     </div>
-    <div class="form-group p-2">
-        <label class="form-label mr-2" for="bloodGroup">Looking For: </label>
-        <select id="bloodGroup" class="form-control border-primary form-select" [(ngModel)]="params.bloodGroup"
-            name="bloodGroup">
+    <div class="form-group px-1 p-sm-2">
+        <label class="col-form-label col-form-label-sm mr-2" for="bloodGroup">Looking For: </label>
+        <select id="bloodGroup" class="form-control form-control-sm border-primary form-select"
+            [(ngModel)]="params.bloodGroup" name="bloodGroup">
             <option value="">All</option>
             <option *ngFor="let item of bloodGroupList" value="{{item}}">{{item}}</option>
         </select>
     </div>
-    <div class="form-group p-2">
-        <label class="form-label mr-2" for="ageFrom">Age From: </label>
-        <input type="number" class="form-control border-primary" style="width: 70px;" id="ageFrom"
+    <div class="form-group px-1 p-sm-2">
+        <label class="col-form-label col-form-label-sm mr-2" for="ageFrom">Age From: </label>
+        <input type="number" class="form-control form-control-sm border-primary" style="width: 70px;" id="ageFrom"
             [(ngModel)]="params.minAge" name="minAge" min="18" max="40" />
     </div>
-    <div class="form-group p-2">
-        <label class="form-label mr-2" for="ageTo">Age To: </label>
-        <input type="number" class="form-control border-primary" style="width: 70px;" id="ageTo"
+    <div class="form-group px-1 p-sm-2">
+        <label class="col-form-label col-form-label-sm mr-2" for="ageTo">Age To: </label>
+        <input type="number" class="form-control form-control-sm border-primary" style="width: 70px;" id="ageTo"
             [(ngModel)]="params.maxAge" name="maxAge" min="19" max="60" />
     </div>
-    <div class="form-group p-2">
-        <button class="btn btn-primary" type="submit">Apply Filter</button>
+    <div class="form-group px-1 p-sm-2">
+        <button class="btn btn-sm btn-primary" type="submit">Apply Filter</button>
     </div>
-    <div class="form-group p-2">
-        <button class="btn btn-info" type="button" (click)="resetFilter()">Reset Filter</button>
+    <div class="form-group px-1 p-sm-2">
+        <button class="btn btn-sm btn-info" type="button" (click)="resetFilter()">Reset Filter</button>
     </div>
-
 </form>
 
-<div class="row mt-4 justify-content-md-center">
-    <div class="col-6 col-md-4 col-lg-3 py-xl-4" *ngFor="let donor of donors">
+<div class="row mt-2 justify-content-md-center">
+    <div class="col-6 col-md-4 col-lg-3 py-xl-4" *ngFor="let donor of modals">
         <div class="card border-primary mb-3" style="border-radius:20%;max-width: 15rem;">
             <div class="card-body d-flex align-items-center flex-column">
                 <div class="image"> <img src="{{donor.photoUrl || './assets/images/profile.png'}}"
@@ -40,8 +39,8 @@
                 <br>
                 <div style="font-size:3vmin"><span class="text-danger">{{donor.bloodGroup}}</span></div>
                 <div style="font-size:2.5vmin">Age: {{donor.age}}</div>
-                <button class="btn btn-primary" (click)="openModal(modal)"
-                    style="font-size:2.5vmin;border-radius: 12px;">{{donor.name}}</button>
+                <button class="btn btn-sm btn-primary" (click)="openModal(modal)"
+                    style="border-radius: 12px;">{{donor.name}}</button>
             </div>
         </div>
         <ng-template #modal>
