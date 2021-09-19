@@ -1,64 +1,36 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Donor } from '../_modals/donor';
 import { DonorParams } from '../_modals/donorParams';
+import { BasePageService } from './base-page.service';
 import { getPaginatedResult, getPaginationHeader } from './paginationHelper';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DonorService {
-  donors: Donor[] = [];
-  donorParams: DonorParams;
-  donorCache = new Map();
+export class DonorService extends BasePageService<Donor, DonorParams> {
+  baseUrl = environment.apiUrl + 'users';
 
-  constructor(private http: HttpClient) {
-    this.donorParams = new DonorParams();
+  constructor(http: HttpClient) {
+    super(http);
+    this.params = new DonorParams();
   }
 
-  getDonorParams() {
-    return this.donorParams;
+  resetParams() {
+    this.params = new DonorParams();
   }
 
-  setDonorParams(params: DonorParams) {
-    this.donorParams = params;
-  }
-
-  resetDonorParams() {
-    this.donorParams = new DonorParams();
-    return this.donorParams;
-  }
-
-  getDonors() {
-    var response = this.donorCache.get(
-      Object.values(this.donorParams).join('-')
+  addHttpParams(httpParams: HttpParams): HttpParams {
+    httpParams = httpParams.append('minAge', this.params.minAge);
+    httpParams = httpParams.append('maxAge', this.params.maxAge);
+    httpParams = httpParams.append(
+      'bloodGroup',
+      encodeURIComponent(this.params.bloodGroup)
     );
-    if (response) {
-      return of(response);
-    }
-
-    let params = getPaginationHeader(
-      this.donorParams.pageNumber,
-      this.donorParams.pageSize
-    );
-
-    params = params.append('minAge', this.donorParams.minAge);
-    params = params.append('maxAge', this.donorParams.maxAge);
-    params = params.append('bloodGroup', encodeURIComponent(this.donorParams.bloodGroup));
-    params = params.append('address', this.donorParams.address);
-
-    return getPaginatedResult<Donor>(
-      environment.apiUrl + 'users',
-      params,
-      this.http
-    ).pipe(
-      map((response) => {
-        this.donorCache.set(Object.values(this.donorParams).join('-'), response);
-        return response;
-      })
-    );
+    httpParams = httpParams.append('address', this.params.address);
+    return httpParams;
   }
 }
