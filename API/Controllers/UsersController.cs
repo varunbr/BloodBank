@@ -49,6 +49,7 @@ namespace API.Controllers
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
         {
             userParams.BloodGroup = HttpUtility.UrlDecode(userParams.BloodGroup);
+            userParams.CurrentUserName = HttpContext.User.GetUserName();
             var users = await _userRepository.GetUsers(userParams);
             Response.AddPaginationHeader(users.PageNumber, users.PageSize, users.TotalPages, users.TotalCount);
             return Ok(users);

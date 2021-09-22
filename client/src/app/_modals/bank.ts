@@ -1,5 +1,6 @@
-export interface Bank {
-  id: number;
+import { BaseModal } from './modal';
+
+export interface Bank extends BaseModal {
   name: string;
   photoUrl: string;
   phoneNumber: string;
@@ -12,6 +13,12 @@ export interface Bank {
   country: string;
   postalCode: string;
   bloodGroups: BloodGroup[];
+  role: string;
+  moderators: {
+    userId: number;
+    userName: string;
+    type: string;
+  };
 }
 
 export interface BloodGroup {

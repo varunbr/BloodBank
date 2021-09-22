@@ -18,6 +18,7 @@ namespace API.Data
         public DbSet<Bank> Banks { get; set; }
         public DbSet<BloodGroup> BloodGroups { get; set; }
         public DbSet<Photo> Photos { get; set; }
+        public DbSet<Moderator> Moderator { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

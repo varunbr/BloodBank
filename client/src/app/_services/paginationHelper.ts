@@ -11,7 +11,7 @@ export function getPaginationHeader(pageNumber: number, pageSize: number) {
 
 export function getPaginatedResult<T>(url, params, http: HttpClient) {
   let pagination = new PageResult<T>();
-  return http.get<T>(url, { observe: 'response', params: params }).pipe(
+  return http.get<T[]>(url, { observe: 'response', params: params }).pipe(
     map((response) => {
       pagination.result = response.body;
       pagination.pagination = JSON.parse(response.headers.get('Pagination'));
