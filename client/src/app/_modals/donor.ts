@@ -1,4 +1,6 @@
-export interface Donor {
+import { BaseModal } from './modal';
+
+export interface Donor extends BaseModal {
   name: string;
   userName: string;
   photoUrl: string;

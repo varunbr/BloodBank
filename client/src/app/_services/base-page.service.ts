@@ -1,16 +1,22 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { BaseModal } from '../_modals/modal';
 import { PageParams } from '../_modals/pageParams';
+import { PageResult } from '../_modals/pagination';
 import { getPaginatedResult, getPaginationHeader } from './paginationHelper';
 
-export abstract class BasePageService<Modal, Param extends PageParams> {
+export abstract class BasePageService<
+  Modal extends BaseModal,
+  Param extends PageParams
+> {
   modal: Modal[] = [];
-  params: Param;
   modalCache = new Map();
+  params: Param;
+  modalMapCache = new Map();
   abstract baseUrl: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(public http: HttpClient) {}
 
   getParams() {
     return this.params;
@@ -23,9 +29,9 @@ export abstract class BasePageService<Modal, Param extends PageParams> {
   abstract resetParams();
 
   getModals() {
-    var response = this.modalCache.get(Object.values(this.params).join('-'));
+    var response = this.modalMapCache.get(Object.values(this.params).join('-'));
     if (response) {
-      return of(response);
+      return this.getCacheData(response);
     }
 
     let params = getPaginationHeader(
@@ -37,10 +43,43 @@ export abstract class BasePageService<Modal, Param extends PageParams> {
 
     return getPaginatedResult<Modal>(this.baseUrl, params, this.http).pipe(
       map((response) => {
-        this.modalCache.set(Object.values(this.params).join('-'), response);
+        this.updateCacheData(response);
         return response;
       })
     );
+  }
+
+  getModal(url: string, id) {
+    var modal = this.modalCache.get(id);
+    if (modal) {
+      return of(this.modalCache.get(id));
+    }
+
+    return this.http.get<Modal>(url + '/' + id).pipe(
+      map((response) => {
+        this.cacheModal(response);
+        return response;
+      })
+    );
+  }
+
+  updateCacheData(response: PageResult<Modal>) {
+    this.modalMapCache.set(Object.values(this.params).join('-'), response);
+    response.result.forEach((element) => {
+      this.modalCache.set(element.id, element);
+    });
+  }
+
+  cacheModal(modal: Modal) {
+    this.modalCache.set(modal.id, modal);
+  }
+
+  getCacheData(response: PageResult<Modal>) {
+    let items = response.result;
+    for (let i = 0; i < items.length; i++) {
+      items[i] = this.modalCache.get(items[i].id);
+    }
+    return of(response);
   }
 
   abstract addHttpParams(httpParams: HttpParams): HttpParams;

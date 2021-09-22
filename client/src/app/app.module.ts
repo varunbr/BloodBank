@@ -21,6 +21,8 @@ import { ModerateComponent } from './moderator/moderate/moderate.component';
 import { AdminComponent } from './moderator/admin/admin.component';
 import { AboutComponent } from './about/about.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { TextFormatPipe } from './_services/text-format.pipe';
+import { BankUpdateComponent } from './moderator/bank-update/bank-update.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,8 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
     ModerateComponent,
     AdminComponent,
     AboutComponent,
+    TextFormatPipe,
+    BankUpdateComponent,
   ],
   imports: [
     BrowserModule,

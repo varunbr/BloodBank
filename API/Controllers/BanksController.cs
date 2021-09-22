@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using System.Web;
-using API.DTOs;
 using API.Extensions;
 using API.Helpers;
 using API.Interfaces;
@@ -20,11 +19,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<BankDto>> GetBanks([FromQuery]BankParams bankParams)
+        public async Task<ActionResult> GetBanks([FromQuery] BankParams bankParams)
         {
             bankParams.BloodGroup = HttpUtility.UrlDecode(bankParams.BloodGroup);
-            var banks = await _bankRepository.GetUsers(bankParams);
-            Response.AddPaginationHeader(banks.PageNumber,banks.PageSize,banks.TotalPages,banks.TotalCount);
+            var banks = await _bankRepository.GetBanks(bankParams);
+            Response.AddPaginationHeader(banks.PageNumber, banks.PageSize, banks.TotalPages, banks.TotalCount);
             return Ok(banks);
         }
     }

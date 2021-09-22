@@ -1,9 +1,10 @@
+import { BaseModal } from '../_modals/modal';
 import { PageParams } from '../_modals/pageParams';
 import { Pagination } from '../_modals/pagination';
 import { getBloodGroupList } from '../_modals/utility';
 import { BasePageService } from './base-page.service';
 
-export abstract class BaseListComponent<Modal, Param extends PageParams> {
+export abstract class BaseListComponent<Modal extends BaseModal, Param extends PageParams> {
   modals: Modal[] = [];
   params: Param;
   pagination: Pagination;

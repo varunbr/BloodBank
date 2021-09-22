@@ -4,5 +4,5 @@ export class BankParams extends PageParams {
   bloodGroup = '';
   address = '';
   orderBy = '';
-  name = '';
+  bankName = '';
 }

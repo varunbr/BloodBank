@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Bank } from '../_modals/bank';
 import { BankParams } from '../_modals/bankParams';
@@ -8,8 +9,8 @@ import { BasePageService } from './base-page.service';
 @Injectable({
   providedIn: 'root',
 })
-export class BankService extends BasePageService<Bank, BankParams> {
-  baseUrl = environment.apiUrl + 'banks';
+export class ModerateService extends BasePageService<Bank, BankParams> {
+  baseUrl = environment.apiUrl + 'moderate';
 
   constructor(http: HttpClient) {
     super(http);
@@ -23,10 +24,19 @@ export class BankService extends BasePageService<Bank, BankParams> {
   addHttpParams(httpParams: HttpParams): HttpParams {
     httpParams = httpParams.append('address', this.params.address);
     httpParams = httpParams.append('name', this.params.bankName);
-    httpParams = httpParams.append(
-      'bloodGroup',
-      encodeURIComponent(this.params.bloodGroup)
-    );
     return httpParams;
+  }
+
+  getBank(id: number) {
+    return this.getModal(this.baseUrl, id);
+  }
+
+  updateBloodData(body) {
+    return this.http.put<Bank>(this.baseUrl + '/blood-data', body).pipe(
+      map((response) => {
+        this.cacheModal(response);
+        return response;
+      })
+    );
   }
 }
