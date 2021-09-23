@@ -39,4 +39,13 @@ export class ModerateService extends BasePageService<Bank, BankParams> {
       })
     );
   }
+
+  updateBankRoles(body) {
+    return this.http.put<Bank>(this.baseUrl + '/bank-role', body).pipe(
+      map((response) => {
+        this.cacheModal(response);
+        return response;
+      })
+    );
+  }
 }

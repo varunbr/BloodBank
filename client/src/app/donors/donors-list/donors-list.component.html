@@ -6,7 +6,7 @@
     </div>
     <div class="form-group px-1 p-sm-2">
         <label class="col-form-label col-form-label-sm mr-2" for="bloodGroup">Looking For: </label>
-        <select id="bloodGroup" class="form-control form-control-sm border-primary form-select"
+        <select id="bloodGroup" class="form-control form-control-sm border-primary form-select form-select-sm"
             [(ngModel)]="params.bloodGroup" name="bloodGroup">
             <option value="">All</option>
             <option *ngFor="let item of bloodGroupList" value="{{item}}">{{item}}</option>

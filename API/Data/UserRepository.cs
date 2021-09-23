@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using API.DTOs;
 using API.Extensions;
 using API.Helpers;
@@ -22,6 +24,27 @@ namespace API.Data
             return await PagedList<MemberDto>.CreateAsync(
                 query.ProjectTo<MemberDto>(Mapper.ConfigurationProvider).AsNoTracking(),
                 userParams.PageSize, userParams.PageNumber);
+        }
+
+        public async Task<IList<string>> GetUserNames(IEnumerable<string> userNames)
+        {
+            return await DataContext.Users.Where(u => userNames.Contains(u.UserName))
+                .Select(u => u.UserName)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetUserIdByUserName(string userName)
+        {
+            return await DataContext.Users.Where(u => u.UserName == userName)
+                .Select(u => u.Id)
+                .SingleAsync();
+        }
+
+        public async Task<string> GetUserNameById(int id)
+        {
+            return await DataContext.Users.Where(u => u.Id == id)
+                .Select(u => u.UserName)
+                .SingleAsync();
         }
     }
 }
