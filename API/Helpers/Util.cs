@@ -37,6 +37,11 @@ namespace API.Helpers
             return new[] { "O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+" };
         }
 
+        public static IEnumerable<string> GetBankRoles()
+        {
+            return new[] { "BankModerator", "BankAdmin" };
+        }
+
         public static int GetAge(DateTime dob)
         {
             var today = DateTime.Now;

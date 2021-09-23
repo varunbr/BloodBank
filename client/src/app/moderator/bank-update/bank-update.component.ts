@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { take } from 'rxjs/operators';
 import { Bank } from 'src/app/_modals/bank';
+import { User } from 'src/app/_modals/user';
+import { AccountService } from 'src/app/_services/account.service';
 import { ModerateService } from 'src/app/_services/moderate.service';
 
 @Component({
@@ -12,14 +15,19 @@ import { ModerateService } from 'src/app/_services/moderate.service';
 })
 export class BankUpdateComponent implements OnInit {
   bank: Bank;
+  currentUser: User;
 
   constructor(
     private route: ActivatedRoute,
     private moderateService: ModerateService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private accountService: AccountService
   ) {}
 
   ngOnInit(): void {
+    this.accountService.user$
+      .pipe(take(1))
+      .subscribe((user) => (this.currentUser = user));
     this.route.params.subscribe((params) => {
       this.getBank(params['id']);
     });
@@ -31,13 +39,37 @@ export class BankUpdateComponent implements OnInit {
     });
   }
 
+  addRole(ngForm: NgForm) {
+    this.bank.moderators.push({
+      type: 'BankModerator',
+      userId: 0,
+      userName: '',
+    });
+    ngForm.form.markAsDirty();
+  }
+
+  removeRole(ngForm: NgForm, index: number) {
+    this.bank.moderators.splice(index, 1);
+    ngForm.form.markAsDirty();
+  }
+
   updateBlood(ngForm: NgForm) {
     this.moderateService
       .updateBloodData({ bankId: this.bank.id, groups: this.bank.bloodGroups })
       .subscribe((response) => {
         this.bank = JSON.parse(JSON.stringify(response));
         ngForm.reset();
-        this.toastr.success('Updated');
+        this.toastr.success('Blood Data Updated');
+      });
+  }
+
+  updateRoles(ngForm: NgForm){
+    this.moderateService
+      .updateBankRoles({ bankId: this.bank.id, moderators: this.bank.moderators })
+      .subscribe((response) => {
+        this.bank = JSON.parse(JSON.stringify(response));
+        ngForm.reset();
+        this.toastr.success('Roles Updated');
       });
   }
 }

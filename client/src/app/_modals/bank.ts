@@ -18,7 +18,7 @@ export interface Bank extends BaseModal {
     userId: number;
     userName: string;
     type: string;
-  };
+  }[];
 }
 
 export interface BloodGroup {
