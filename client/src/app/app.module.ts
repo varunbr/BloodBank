@@ -23,6 +23,8 @@ import { AboutComponent } from './about/about.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { TextFormatPipe } from './_services/text-format.pipe';
 import { BankUpdateComponent } from './moderator/bank-update/bank-update.component';
+import { BankEditComponent } from './moderator/bank-edit/bank-edit.component';
+import { FormInputComponent } from './forms/form-input/form-input.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,8 @@ import { BankUpdateComponent } from './moderator/bank-update/bank-update.compone
     AboutComponent,
     TextFormatPipe,
     BankUpdateComponent,
+    BankEditComponent,
+    FormInputComponent,
   ],
   imports: [
     BrowserModule,

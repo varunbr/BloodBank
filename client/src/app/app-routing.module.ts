@@ -9,6 +9,7 @@ import { AdminComponent } from './moderator/admin/admin.component';
 import { ModerateComponent } from './moderator/moderate/moderate.component';
 import { RegisterComponent } from './register/register.component';
 import { BankUpdateComponent } from './moderator/bank-update/bank-update.component';
+import { BankEditComponent } from './moderator/bank-edit/bank-edit.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'moderate/:id', component: BankUpdateComponent },
   { path: 'moderate', component: ModerateComponent },
   { path: 'admin', component: AdminComponent },
+  { path: 'admin/:id', component: BankEditComponent },
   { path: 'about', component: AboutComponent },
   { path: '**', component: HomeComponent },
 ];

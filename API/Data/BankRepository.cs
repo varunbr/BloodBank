@@ -64,13 +64,10 @@ namespace API.Data
             return bank;
         }
 
-        public async Task<BankModeratorDto> UpdateBloodData(BloodGroupUpdateDto updateDto, int userId)
+        public async Task<bool> UpdateBloodData(BloodGroupUpdateDto updateDto, int userId)
         {
             var bank = await DataContext.Banks
-                .Include(b => b.Address)
-                .Include(b => b.Photo)
                 .Include(b => b.BloodGroups)
-                .Include(b => b.Moderators)
                 .FirstOrDefaultAsync(b => b.Id == updateDto.BankId);
 
             foreach (var gp in updateDto.Groups)
@@ -80,20 +77,12 @@ namespace API.Data
 
             bank.LastUpdated = DateTime.UtcNow;
 
-            if (await DataContext.SaveChangesAsync() <= 0) return null;
-
-            var bankDto = Mapper.Map<Bank, BankModeratorDto>(bank);
-            bankDto.UpdateRole(userId);
-
-            return bankDto;
+            return await DataContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<BankModeratorDto> UpdateRoles(BankRoleUpdateDto updateDto, int userId)
+        public async Task<bool> UpdateRoles(BankRoleUpdateDto updateDto, int userId = 0)
         {
             var bank = await DataContext.Banks
-                .Include(b => b.Address)
-                .Include(b => b.Photo)
-                .Include(b => b.BloodGroups)
                 .Include(b => b.Moderators)
                 .SingleAsync(b => b.Id == updateDto.BankId);
 
@@ -133,14 +122,18 @@ namespace API.Data
                 }
             }
 
-            var result = await DataContext.SaveChangesAsync();
-            if (result <= 0) return null;
+            if (await DataContext.SaveChangesAsync() > 0)
+            {
+                await UpdateUserRole(modifiedIds);
+                return true;
+            }
 
-            await UpdateUserRole(modifiedIds);
+            return false;
+        }
 
-            var bankDto = Mapper.Map<Bank, BankModeratorDto>(bank);
-            bankDto.UpdateRole(userId);
-            return bankDto;
+        public async Task<bool> IsBankExist(int bankId)
+        {
+            return await DataContext.Banks.AnyAsync(b => b.Id == bankId);
         }
 
         public async Task<bool> IsBankModerator(int bankId, int userId)
@@ -177,6 +170,37 @@ namespace API.Data
                     await _userManager.AddToRoleAsync(user, currentRole);
                 }
             }
+        }
+
+        public async Task<PagedList<BankModeratorDto>> GetBanksForAdmin(BankParams bankParams)
+        {
+            var query = DataContext.Banks.AsQueryable();
+
+            query = query.BuildQuery(bankParams);
+            return await PagedList<BankModeratorDto>.CreateAsync(
+                query.ProjectTo<BankModeratorDto>(Mapper.ConfigurationProvider).AsNoTracking(),
+                bankParams.PageSize, bankParams.PageNumber);
+        }
+
+        public async Task<BankModeratorDto> GetBankForAdmin(int bankId)
+        {
+            return await DataContext.Banks.AsQueryable()
+                .Where(b => b.Id == bankId)
+                .ProjectTo<BankModeratorDto>(Mapper.ConfigurationProvider)
+                .AsNoTracking()
+                .SingleOrDefaultAsync();
+        }
+
+        public async Task<bool> UpdateBank(BankModeratorDto bankDto)
+        {
+            var bank = await DataContext.Banks
+                .Include(b => b.Address)
+                .FirstOrDefaultAsync(b => b.Id == bankDto.Id);
+
+            Mapper.Map(bankDto, bank);
+            bank.LastUpdated = DateTime.UtcNow;
+
+            return await DataContext.SaveChangesAsync() > 0;
         }
     }
 }
