@@ -41,6 +41,13 @@ namespace API.Helpers
                 .ForMember(dest => dest.BloodGroups,
                     opt => opt.MapFrom(src => src.BloodGroups));
 
+            CreateMap<BankModeratorDto, Address>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
+            CreateMap<BankModeratorDto, Bank>()
+                .ForMember(dest => dest.BloodGroups, opt => opt.Ignore())
+                .ForMember(dest => dest.Moderators, opt => opt.Ignore())
+                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src));
+
             CreateMap<DateTime, DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
         }
     }
