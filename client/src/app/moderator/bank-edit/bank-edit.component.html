@@ -9,11 +9,11 @@
                     </div>
                     <ul class="list-group list-group-flush mt-4">
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <h6 class="mb-0">BankId</h6>
+                            <h6 class="mb-0"><i class="fa fa-id-card"></i> BankId</h6>
                             <span class="text-secondary">{{bank.id}}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <h6 class="mb-0">Last Update</h6>
+                            <h6 class="mb-0"><i class="fa fa-history"></i> Last Update</h6>
                             <span class="text-secondary">{{bank.lastUpdated | timeago}}</span>
                         </li>
                     </ul>
@@ -22,7 +22,7 @@
         </div>
         <div class="col-lg-8">
             <div class="card my-2">
-                <div class="card-header text-primary text-center">Bank Information</div>
+                <div class="card-header text-primary text-center"><i class="fa fa-building"></i> Bank Information</div>
                 <div class="card-body">
                     <form [formGroup]="bankUpdateForm"
                         (ngSubmit)="!bankUpdateForm.pristine && updateBank()">
@@ -42,14 +42,14 @@
                             </app-form-input>
                             <div class="text-center mt-2">
                                 <button [disabled]="bankUpdateForm.pristine || bankUpdateForm.invalid" class="btn btn-primary"
-                                    type="submit">Update</button>
+                                    type="submit"><i class="fa fa-check"></i> Update</button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
             <div class="card my-2">
-                <div class="card-header text-primary text-center">Role Administration</div>
+                <div class="card-header text-primary text-center"><i class="fa fa-user-plus"></i> Role Administration</div>
                 <div class="card-body">
                     <form #rolesForm="ngForm" (ngSubmit)="!rolesForm.pristine && updateRoles(rolesForm)">
                         <table class="table">
@@ -86,10 +86,10 @@
                         </table>
                         <div class="row">
                             <div class="col d-flex justify-content-end flex-row">
-                                <button type="button" class="btn btn-info mr-4" (click)="addRole(rolesForm)">Add
+                                <button type="button" class="btn btn-info mr-4" (click)="addRole(rolesForm)"><i class="fa fa-user-plus"></i> Add
                                     User</button>
                                 <button type="submit" [disabled]="rolesForm.pristine"
-                                    class="btn btn-primary mr-4">Update</button>
+                                    class="btn btn-primary mr-4"><i class="fa fa-check"></i> Update</button>
                             </div>
                         </div>
                     </form>

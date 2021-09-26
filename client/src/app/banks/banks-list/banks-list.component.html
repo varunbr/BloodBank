@@ -18,10 +18,10 @@
         </select>
     </div>
     <div class="form-group px-1 p-sm-2">
-        <button class="btn btn-sm btn-primary" type="submit">Apply Filter</button>
+        <button class="btn btn-sm btn-primary" type="submit"><i class="fa fa-filter"></i> Filter</button>
     </div>
     <div class="form-group px-1 p-sm-2">
-        <button class="btn btn-sm btn-info" type="button" (click)="resetFilter()">Reset Filter</button>
+        <button class="btn btn-sm btn-info" type="button" (click)="resetFilter()"><i class="fa fa-undo"></i> Reset</button>
     </div>
 </form>
 
@@ -53,7 +53,7 @@
                             </div>
                         </div>
                         <button class="btn btn-sm btn-primary" style="border-radius: 12px;"
-                            (click)="openModal(modal)">Contact</button>
+                            (click)="openModal(modal)"><i class="fa fa-address-card"></i> Contact</button>
                     </div>
                 </div>
             </div>
@@ -76,7 +76,16 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-3 text-primary">
-                                <h6 class="mb-0">Email</h6>
+                                <h6><i class="fa fa-id-card"></i> BankId</h6>
+                            </div>
+                            <div class="col-sm-9">
+                                {{bank.id}}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3 text-primary">
+                                <h6><i class="fa fa-envelope-open"></i> Email</h6>
                             </div>
                             <div class="col-sm-9">
                                 {{bank.email}}
@@ -85,7 +94,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-sm-3 text-primary">
-                                Phone
+                                <h6><i class="fa fa-phone"></i> Phone</h6>
                             </div>
                             <div class="col-sm-9">
                                 {{bank.phoneNumber}}
@@ -94,7 +103,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-sm-3 text-primary">
-                                Website
+                                <h6><i class="fa fa-globe"></i> Website</h6>                                
                             </div>
                             <div class="col-sm-9">
                                 <a href="{{bank.website}}">{{bank.website}}</a>
@@ -103,16 +112,16 @@
                         <hr>
                         <div class="row">
                             <div class="col-sm-3 text-primary">
-                                <h6 class="mb-0">Address</h6>
+                                <h6><i class="fa fa-map-marker"></i> Address</h6>    
                             </div>
                             <div class="col-sm-9">
-                                {{bank.area}}, {{bank.city}}
+                                {{bank.area}}, {{bank.city}} - {{bank.postalCode}}
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-sm-3 text-primary">
-                                Updated
+                                <h6><i class="fa fa-history"></i> Updated</h6>  
                             </div>
                             <div class="col-sm-9">
                                 {{bank.lastUpdated | timeago}}
