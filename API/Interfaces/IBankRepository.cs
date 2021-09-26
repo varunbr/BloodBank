@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using API.DTOs;
 using API.Helpers;
+using Microsoft.AspNetCore.Identity;
 
 namespace API.Interfaces
 {
@@ -14,8 +15,13 @@ namespace API.Interfaces
         Task<bool> IsBankExist(int bankId);
         Task<bool> IsBankModerator(int bankId, int userId);
         Task<bool> IsBankAdmin(int bankId, int userId);
+        Task<bool> IsAdmin(int userId);
         Task<PagedList<BankModeratorDto>> GetBanksForAdmin(BankParams bankParams);
         Task<BankModeratorDto> GetBankForAdmin(int bankId);
         Task<bool> UpdateBank(BankModeratorDto bankDto);
+        Task<PagedList<AdminRoleDto>> GetAdminRoles(AdminRoleParams roleParams);
+        Task<AdminRoleDto> GetAdminRole(AdminRoleDto roleDto);
+        Task<IdentityResult> AddAdminRole(AdminRoleDto roleDto);
+        Task<IdentityResult> RemoveAdminRole(AdminRoleDto roleDto);
     }
 }

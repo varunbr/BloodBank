@@ -20,6 +20,9 @@
                 <li *ngIf="accountService.user$ | async" class="nav-item">
                     <a class="nav-link" href="#" routerLink='/admin'>Admin</a>
                 </li>
+                <li *ngIf="accountService.user$ | async" class="nav-item">
+                    <a class="nav-link" href="#" routerLink='/administration'>Administration</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" routerLink='/about'>About</a>
                 </li>

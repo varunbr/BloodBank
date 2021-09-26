@@ -48,6 +48,18 @@ namespace API.Helpers
                 .ForMember(dest => dest.Moderators, opt => opt.Ignore())
                 .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src));
 
+            CreateMap<AppUserRole, AdminRoleDto>()
+                .ForMember(dest => dest.Id, 
+                    opt => opt.MapFrom(src => src.UserId))
+                .ForMember(dest => dest.Role,
+                    opt => opt.MapFrom(src => src.Role.Name))
+                .ForMember(dest => dest.UserName,
+                    opt => opt.MapFrom(src => src.User.UserName))
+                .ForMember(dest => dest.PhotoUrl,
+                    opt => opt.MapFrom(src => src.User.Photo.Url))
+                .ForMember(dest => dest.Name,
+                    opt => opt.MapFrom(src => src.User.Name));
+
             CreateMap<DateTime, DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
         }
     }

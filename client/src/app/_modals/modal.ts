@@ -1,3 +1,3 @@
 export class BaseModal {
-  id: number;
+  id: number = 0;
 }

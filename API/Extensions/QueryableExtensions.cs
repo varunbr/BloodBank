@@ -79,5 +79,24 @@ namespace API.Extensions
             };
             return query;
         }
+
+        public static IQueryable<AppUserRole> BuildQuery(this IQueryable<AppUserRole> query, AdminRoleParams roleParams)
+        {
+            if (roleParams.UserId > 0) 
+                query = query.Where(r => r.UserId == roleParams.UserId);
+
+            if (!string.IsNullOrEmpty(roleParams.UserName))
+                query = query.Where(r => r.User.UserName == roleParams.UserName);
+
+            if (!string.IsNullOrEmpty(roleParams.Name))
+                query = query.Where(r => r.User.Name.Contains(roleParams.Name));
+
+            query = string.IsNullOrEmpty(roleParams.Role) ? 
+                query.Where(r => r.Role.Name == "Admin" || r.Role.Name== "Moderator") : 
+                query.Where(r => r.Role.Name == roleParams.Role);
+
+            query = query.OrderByDescending(r => r.User.LastActive);
+            return query;
+        }
     }
 }

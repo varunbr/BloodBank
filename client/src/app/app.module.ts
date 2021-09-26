@@ -25,6 +25,7 @@ import { TextFormatPipe } from './_services/text-format.pipe';
 import { BankUpdateComponent } from './moderator/bank-update/bank-update.component';
 import { BankEditComponent } from './moderator/bank-edit/bank-edit.component';
 import { FormInputComponent } from './forms/form-input/form-input.component';
+import { AdministrationComponent } from './moderator/administration/administration.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { FormInputComponent } from './forms/form-input/form-input.component';
     BankUpdateComponent,
     BankEditComponent,
     FormInputComponent,
+    AdministrationComponent,
   ],
   imports: [
     BrowserModule,

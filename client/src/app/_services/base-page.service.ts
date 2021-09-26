@@ -10,13 +10,16 @@ export abstract class BasePageService<
   Modal extends BaseModal,
   Param extends PageParams
 > {
+  cache: boolean;
   modal: Modal[] = [];
   modalCache = new Map();
   params: Param;
   modalMapCache = new Map();
   abstract baseUrl: string;
 
-  constructor(public http: HttpClient) {}
+  constructor(public http: HttpClient, cache: boolean = true) {
+    this.cache = cache;
+  }
 
   getParams() {
     return this.params;
@@ -30,7 +33,7 @@ export abstract class BasePageService<
 
   getModals() {
     var response = this.modalMapCache.get(Object.values(this.params).join('-'));
-    if (response) {
+    if (this.cache && response) {
       return this.getCacheData(response);
     }
 
@@ -64,14 +67,18 @@ export abstract class BasePageService<
   }
 
   updateCacheData(response: PageResult<Modal>) {
-    this.modalMapCache.set(Object.values(this.params).join('-'), response);
-    response.result.forEach((element) => {
-      this.modalCache.set(element.id, element);
-    });
+    if (this.cache) {
+      this.modalMapCache.set(Object.values(this.params).join('-'), response);
+      response.result.forEach((element) => {
+        this.modalCache.set(element.id, element);
+      });
+    }
   }
 
   cacheModal(modal: Modal) {
-    this.modalCache.set(modal.id, modal);
+    if (this.cache) {
+      this.modalCache.set(modal.id, modal);
+    }
   }
 
   getCacheData(response: PageResult<Modal>) {

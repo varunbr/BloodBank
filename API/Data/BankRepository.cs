@@ -19,7 +19,8 @@ namespace API.Data
         private readonly IUserRepository _userRepository;
         private readonly UserManager<AppUser> _userManager;
 
-        public BankRepository(DataContext dataContext, IMapper mapper, IUserRepository userRepository, UserManager<AppUser> userManager) : base(dataContext, mapper)
+        public BankRepository(DataContext dataContext, IMapper mapper, IUserRepository userRepository,
+            UserManager<AppUser> userManager) : base(dataContext, mapper)
         {
             _userRepository = userRepository;
             _userManager = userManager;
@@ -147,6 +148,11 @@ namespace API.Data
                                                              m.BankId == bankId && m.Type == "BankAdmin");
         }
 
+        public async Task<bool> IsAdmin(int userId)
+        {
+            return await DataContext.UserRoles.AnyAsync(r => r.UserId == userId && r.Role.Name == "Admin");
+        }
+
         private async Task UpdateUserRole(IEnumerable<int> userIds)
         {
             foreach (var userId in userIds)
@@ -201,6 +207,45 @@ namespace API.Data
             bank.LastUpdated = DateTime.UtcNow;
 
             return await DataContext.SaveChangesAsync() > 0;
+        }
+
+        public async Task<PagedList<AdminRoleDto>> GetAdminRoles(AdminRoleParams roleParams)
+        {
+            var query = DataContext.UserRoles.AsQueryable();
+            query = query.BuildQuery(roleParams);
+            return await PagedList<AdminRoleDto>.CreateAsync(
+                query.ProjectTo<AdminRoleDto>(Mapper.ConfigurationProvider).AsNoTracking(),
+                roleParams.PageSize, roleParams.PageNumber);
+        }
+
+        public async Task<IdentityResult> AddAdminRole(AdminRoleDto roleDto)
+        {
+            if(!Util.GetAdminRoles().Contains(roleDto.Role))
+                return IdentityResult.Failed(new IdentityError { Description = "Invalid role." });
+            var user = await _userManager.FindByNameAsync(roleDto.UserName);
+            if (user == null)
+                return IdentityResult.Failed(new IdentityError { Description = "User doesn't exist." });
+
+            return await _userManager.AddToRoleAsync(user, roleDto.Role);
+        }
+
+        public async Task<IdentityResult> RemoveAdminRole(AdminRoleDto roleDto)
+        {
+            if (!Util.GetAdminRoles().Contains(roleDto.Role))
+                return IdentityResult.Failed(new IdentityError { Description = "Invalid role." });
+            var user = await _userManager.FindByNameAsync(roleDto.UserName);
+            if (user == null)
+                return IdentityResult.Failed(new IdentityError { Description = "User doesn't exist." });
+
+            return await _userManager.RemoveFromRoleAsync(user, roleDto.Role);
+        }
+
+        public async Task<AdminRoleDto> GetAdminRole(AdminRoleDto roleDto)
+        {
+            var query = DataContext.UserRoles.AsQueryable();
+            query = query.Where(r => r.Role.Name == roleDto.Role && r.User.UserName == roleDto.UserName);
+            return await query.ProjectTo<AdminRoleDto>(Mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
         }
     }
 }
