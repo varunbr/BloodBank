@@ -1,0 +1,114 @@
+<form #filterForm="ngForm" (ngSubmit)="applyFilter()" class="form-inline mt-sm-3" autocomplete="off">
+    <div class="form-group px-1 p-sm-2">
+        <label class="col-form-label col-form-label-sm mr-2" for="name">Name: </label>
+        <input type="text" class="form-control form-control-sm border-primary" style="width: 200px;" id="name"
+            [(ngModel)]="params.name" name="name" placeholder="Search by Name" />
+    </div>
+    <div class="form-group px-1 p-sm-2">
+        <label class="col-form-label col-form-label-sm mr-2" for="userName">Username: </label>
+        <input type="text" class="form-control form-control-sm border-primary" placeholder="Search by Username"
+            style="width: 200px;" id="userName" [(ngModel)]="params.name" name="userName" />
+    </div>
+    <div class="form-group px-1 p-sm-2">
+        <label class="col-form-label col-form-label-sm mr-2" for="filterRole">Role: </label>
+        <select id="filterRole" class="form-control form-control-sm form-select form-select-sm border-primary"
+            [(ngModel)]="params.role" name="filterRole">
+            <option value="">All</option>
+            <option value="Moderator">Moderator</option>
+            <option value="Admin">Admin</option>
+        </select>
+    </div>
+    <div class="form-group px-1 p-sm-2">
+        <button class="btn btn-sm btn-primary" type="submit">Apply Filter</button>
+    </div>
+    <div class="form-group px-1 p-sm-2">
+        <button class="btn btn-sm btn-info" type="button" (click)="openModal(modal)">Add Role</button>
+    </div>
+</form>
+
+<div class="mt-2">
+    <table class="table table-hover">
+        <thead class="text-primary">
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Name</th>
+                <th scope="col">Username</th>
+                <th scope="col">Role</th>
+                <th scope="col">Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of modals; let i = index">
+                <td class="d-flex justify-content-center">
+                    <img src="{{user.photoUrl || './assets/images/profile.png'}}"
+                        class="img-fluid rounded-circle mb-2 mb-md-0" style="max-height: 50px;" />
+                </td>
+                <td class="align-middle">
+                    {{user.name}}
+                </td>
+                <td class="align-middle">
+                    {{user.userName}}
+                </td>
+                <td class="align-middle">
+                    {{user.role}}
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-danger ml-2" (click)="removeRole(user, i)"><i
+                            class="fa fa-trash"></i></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<ng-template #modal>
+    <div class="float-right">
+        <button type="button" class="close mr-4 mt-3" data-dismiss="modal" aria-label="Close"
+            (click)="modalRef?.hide()">
+            <span class="text-danger" aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="card border-primary mb-3" style="border-radius:20px;">
+            <div class="card-body">
+                <form #rolesForm="ngForm" (ngSubmit)="rolesForm.valid && addRole()">
+                    <div class="row">
+                        <div class="col-sm-3 text-primary">
+                            Username
+                        </div>
+                        <div class="col-sm-9">
+                            <input type="text" required class="form-control form-control-sm"
+                                [(ngModel)]="adminRole.userName" name="userName" placeholder="Enter Username"
+                                id="userName">
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-sm-3 text-primary">
+                            Role
+                        </div>
+                        <div class="col-sm-9">
+                            <select id="role" class="form-control form-control-sm form-select form-select-sm"
+                                [(ngModel)]="adminRole.role" name="role">
+                                <option value="Moderator">Moderator</option>
+                                <option value="Admin">Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12 mt-4 mt-md-0 d-flex justify-content-center">
+                            <button [disabled]="rolesForm.invalid" class="btn btn-sm btn-success" type="submit"><i
+                                    class="fa fa-check"></i> Add Role</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<div class="d-flex justify-content-center mt-2" *ngIf="pagination">
+    <pagination [boundaryLinks]="true" [totalItems]="pagination.totalCount" [maxSize]="7"
+        [itemsPerPage]="pagination.pageSize" (pageChanged)="pageChanged($event)" [(ngModel)]="pagination.pageNumber"
+        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+    </pagination>
+</div>

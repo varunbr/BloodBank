@@ -6,6 +6,7 @@ using API.Extensions;
 using API.Helpers;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -70,6 +71,48 @@ namespace API.Controllers
             return await _bankRepository.UpdateRoles(updateDto) ?
                 Ok(await _bankRepository.GetBankForAdmin(updateDto.BankId)) :
                 BadRequest("Failed to update roles");
+        }
+
+        [HttpGet("roles"), Authorize(Roles = "Admin")]
+        public async Task<ActionResult> GetAdminRoles([FromQuery] AdminRoleParams roleParams)
+        {
+            if (!await _bankRepository.IsAdmin(HttpContext.User.GetUserId()))
+                return BadRequest("You are not admin");
+
+            var roles = await _bankRepository.GetAdminRoles(roleParams);
+            Response.AddPaginationHeader(roles.PageNumber, roles.PageSize, roles.TotalPages, roles.TotalCount);
+            return Ok(roles);
+        }
+
+        [HttpPost("roles"), Authorize(Roles = "Admin")]
+        public async Task<ActionResult> AddAdminRole(AdminRoleDto roleDto)
+        {
+            if (!await _bankRepository.IsAdmin(HttpContext.User.GetUserId()))
+                return BadRequest("You are not admin");
+
+            var result =await _bankRepository.AddAdminRole(roleDto);
+            if (result != IdentityResult.Success)
+            {
+                return BadRequest(result.Errors.FirstOrDefault()?.Description);
+            }
+
+            return Ok(await _bankRepository.GetAdminRole(roleDto));
+        }
+
+        [HttpDelete("roles"), Authorize(Roles = "Admin")]
+        public async Task<ActionResult> RemoveAdminRole(AdminRoleDto roleDto)
+        {
+            if (!await _bankRepository.IsAdmin(HttpContext.User.GetUserId()))
+                return BadRequest("You are not admin");
+            if (roleDto.UserName.Equals(HttpContext.User.GetUserName(), StringComparison.OrdinalIgnoreCase))
+                return BadRequest("You cannot remove your role.");
+
+            var result = await _bankRepository.RemoveAdminRole(roleDto);
+            if (result != IdentityResult.Success)
+            {
+                return BadRequest(result.Errors.FirstOrDefault()?.Description);
+            }
+            return Ok();
         }
     }
 }
