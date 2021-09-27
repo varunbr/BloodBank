@@ -15,6 +15,9 @@
     <div class="form-group px-1 p-sm-2">
         <button class="btn btn-sm btn-info" type="button" (click)="resetFilter()"><i class="fa fa-undo"></i> Reset</button>
     </div>
+    <div class="form-group px-1 p-sm-2">
+        <button class="btn btn-sm btn-outline-primary" type="button" routerLink="/admin/bank-register"><i class="fa fa-sign-in"></i> Register Bank</button>
+    </div>
 </form>
 <div class="list-group">
     <a routerLink="/admin/{{bank.id}}" class="list-group-item list-group-item-action" *ngFor="let bank of modals">

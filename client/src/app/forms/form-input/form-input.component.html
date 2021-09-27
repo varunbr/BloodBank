@@ -1,9 +1,10 @@
 <div class="row form-group">
-    <div class="col-sm-3">
-        <label for="{{label}}" class="text-primary mt-2">{{label}}</label>
+    <div class="col-sm-4 col-xl-3">
+        <label for="{{label}}" class="text-primary mt-2"><ng-content></ng-content> {{label}}</label>
     </div>
-    <div class="col-sm-9 text-secondary">
-        <input type="{{type}}" id="{{label}}" [class.is-invalid]="ngControl.invalid && ngControl.touched" class="form-control" [formControl]="ngControl.control">
+    <div class="col-sm-8 col-xl-9 text-secondary">
+        <input type="{{type}}" id="{{label}}" [class.is-invalid]="ngControl.invalid && ngControl.touched"
+            placeholder="{{label}}" class="form-control" [formControl]="ngControl.control">
         <div class="invalid-feedback" *ngIf="ngControl.control.errors?.required">Please enter a {{label}}.</div>
         <div class="invalid-feedback" *ngIf="ngControl.control.errors?.email">Please enter valid {{label}}.</div>
     </div>

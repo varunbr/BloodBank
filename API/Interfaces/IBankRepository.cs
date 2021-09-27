@@ -23,5 +23,6 @@ namespace API.Interfaces
         Task<AdminRoleDto> GetAdminRole(AdminRoleDto roleDto);
         Task<IdentityResult> AddAdminRole(AdminRoleDto roleDto);
         Task<IdentityResult> RemoveAdminRole(AdminRoleDto roleDto);
+        Task<int> RegisterBank(BankRegisterDto registerDto);
     }
 }

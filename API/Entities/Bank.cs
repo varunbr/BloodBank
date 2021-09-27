@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using API.Helpers;
 
 namespace API.Entities
 {
@@ -15,5 +17,17 @@ namespace API.Entities
         public Photo Photo { get; set; }
         public ICollection<BloodGroup> BloodGroups { get; set; }
         public ICollection<Moderator> Moderators { get; set; }
+
+        public static Bank Create()
+        {
+            var bank = new Bank
+            {
+                Photo = new Photo(),
+                Moderators = new List<Moderator>(),
+                BloodGroups = Util.GetBloodGroupList().Select(x => new BloodGroup { Group = x }).ToList()
+            };
+
+            return bank;
+        }
     }
 }

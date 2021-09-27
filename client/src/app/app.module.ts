@@ -26,6 +26,7 @@ import { BankUpdateComponent } from './moderator/bank-update/bank-update.compone
 import { BankEditComponent } from './moderator/bank-edit/bank-edit.component';
 import { FormInputComponent } from './forms/form-input/form-input.component';
 import { AdministrationComponent } from './moderator/administration/administration.component';
+import { BankRegisterComponent } from './moderator/bank-register/bank-register.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { AdministrationComponent } from './moderator/administration/administrati
     BankEditComponent,
     FormInputComponent,
     AdministrationComponent,
+    BankRegisterComponent,
   ],
   imports: [
     BrowserModule,

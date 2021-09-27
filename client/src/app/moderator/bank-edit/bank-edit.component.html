@@ -27,18 +27,32 @@
                     <form [formGroup]="bankUpdateForm"
                         (ngSubmit)="!bankUpdateForm.pristine && updateBank()">
                         <div class="row">
-                            <app-form-input class="col-md-12" [label]="'Name'" formControlName="name"></app-form-input>
+                            <app-form-input class="col-md-6" [label]="'Name'" formControlName="name">
+                                <i class="fa fa-id-card"></i>
+                            </app-form-input>
                             <app-form-input class="col-md-6" [label]="'Website'" formControlName="website">
+                                <i class="fa fa-globe"></i>
                             </app-form-input>
-                            <app-form-input class="col-md-6" [label]="'Email'" formControlName="email"></app-form-input>
+                            <app-form-input class="col-md-6" [label]="'Email'" formControlName="email">
+                                <i class="fa fa-envelope-open"></i>
+                            </app-form-input>
                             <app-form-input class="col-md-6" [label]="'Phone'" formControlName="phoneNumber">
+                                <i class="fa fa-phone"></i>
                             </app-form-input>
-                            <app-form-input class="col-md-6" [label]="'Area'" formControlName="area"></app-form-input>
-                            <app-form-input class="col-md-6" [label]="'City'" formControlName="city"></app-form-input>
-                            <app-form-input class="col-md-6" [label]="'State'" formControlName="state"></app-form-input>
+                            <app-form-input class="col-md-6" [label]="'Area'" formControlName="area">
+                                <i class="fa fa-street-view"></i>
+                            </app-form-input>
+                            <app-form-input class="col-md-6" [label]="'City'" formControlName="city">
+                                <i class="fa fa-university"></i>
+                            </app-form-input>
+                            <app-form-input class="col-md-6" [label]="'State'" formControlName="state">
+                                <i class="fa fa-map"></i>
+                            </app-form-input>
                             <app-form-input class="col-md-6" [label]="'Country'" formControlName="country">
+                                <i class="fa fa-flag"></i>
                             </app-form-input>
                             <app-form-input class="col-md-6" [label]="'Pincode'" formControlName="postalCode">
+                                <i class="fa fa-map-pin"></i>
                             </app-form-input>
                             <div class="text-center mt-2">
                                 <button [disabled]="bankUpdateForm.pristine || bankUpdateForm.invalid" class="btn btn-primary"
