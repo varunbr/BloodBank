@@ -48,4 +48,8 @@ export class AdminService extends BasePageService<Bank, BankParams> {
       })
     );
   }
+
+  registerBank(body) {
+    return this.http.post(this.baseUrl + '/register-bank', body);
+  }
 }

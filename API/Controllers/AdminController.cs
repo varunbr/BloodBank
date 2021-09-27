@@ -2,12 +2,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
+using API.Entities;
 using API.Extensions;
 using API.Helpers;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -16,11 +18,13 @@ namespace API.Controllers
     {
         private readonly IBankRepository _bankRepository;
         private readonly IUserRepository _userRepository;
+        private readonly UserManager<AppUser> _userManager;
 
-        public AdminController(IBankRepository bankRepository, IUserRepository userRepository)
+        public AdminController(IBankRepository bankRepository, IUserRepository userRepository, UserManager<AppUser> userManager)
         {
             _bankRepository = bankRepository;
             _userRepository = userRepository;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -38,6 +42,17 @@ namespace API.Controllers
                 return BadRequest("Bank doesn't exist.");
             var bank = await _bankRepository.GetBankForAdmin(bankId);
             return bank == null ? BadRequest("Bank not available") : Ok(bank);
+        }
+
+        [HttpPost("register-bank")]
+        public async Task<ActionResult> RegisterBank(BankRegisterDto registerDto)
+        {
+            if (!await _userManager.Users.AnyAsync(u => u.UserName == registerDto.BankAdmin))
+                return BadRequest($"The user {registerDto.BankAdmin} doesn't exist.");
+            var result = await _bankRepository.RegisterBank(registerDto);
+            if (result <= 0)
+                return BadRequest("Failed to register bank.");
+            return Ok(result);
         }
 
         [HttpPut]
@@ -90,7 +105,7 @@ namespace API.Controllers
             if (!await _bankRepository.IsAdmin(HttpContext.User.GetUserId()))
                 return BadRequest("You are not admin");
 
-            var result =await _bankRepository.AddAdminRole(roleDto);
+            var result = await _bankRepository.AddAdminRole(roleDto);
             if (result != IdentityResult.Success)
             {
                 return BadRequest(result.Errors.FirstOrDefault()?.Description);

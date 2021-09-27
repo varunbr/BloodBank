@@ -11,6 +11,7 @@ import { RegisterComponent } from './register/register.component';
 import { BankUpdateComponent } from './moderator/bank-update/bank-update.component';
 import { BankEditComponent } from './moderator/bank-edit/bank-edit.component';
 import { AdministrationComponent } from './moderator/administration/administration.component';
+import { BankRegisterComponent } from './moderator/bank-register/bank-register.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'moderate/:id', component: BankUpdateComponent },
   { path: 'moderate', component: ModerateComponent },
   { path: 'admin', component: AdminComponent },
+  { path: 'admin/bank-register', component: BankRegisterComponent },
   { path: 'admin/:id', component: BankEditComponent },
   { path: 'administration', component: AdministrationComponent },
   { path: 'about', component: AboutComponent },

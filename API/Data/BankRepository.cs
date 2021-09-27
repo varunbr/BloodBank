@@ -220,7 +220,7 @@ namespace API.Data
 
         public async Task<IdentityResult> AddAdminRole(AdminRoleDto roleDto)
         {
-            if(!Util.GetAdminRoles().Contains(roleDto.Role))
+            if (!Util.GetAdminRoles().Contains(roleDto.Role))
                 return IdentityResult.Failed(new IdentityError { Description = "Invalid role." });
             var user = await _userManager.FindByNameAsync(roleDto.UserName);
             if (user == null)
@@ -246,6 +246,23 @@ namespace API.Data
             query = query.Where(r => r.Role.Name == roleDto.Role && r.User.UserName == roleDto.UserName);
             return await query.ProjectTo<AdminRoleDto>(Mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<int> RegisterBank(BankRegisterDto registerDto)
+        {
+            var bank = Bank.Create();
+            var userId = await _userRepository.GetUserIdByUserName(registerDto.BankAdmin);
+            bank = Mapper.Map(registerDto, bank);
+            bank.Moderators.Add(new Moderator
+            {
+                UserId = userId,
+                Type = "BankAdmin"
+
+            });
+            DataContext.Banks.Add(bank);
+            await DataContext.SaveChangesAsync();
+            await UpdateUserRole(new[] { userId });
+            return bank.Id;
         }
     }
 }

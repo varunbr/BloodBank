@@ -49,7 +49,7 @@ namespace API.Helpers
                 .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src));
 
             CreateMap<AppUserRole, AdminRoleDto>()
-                .ForMember(dest => dest.Id, 
+                .ForMember(dest => dest.Id,
                     opt => opt.MapFrom(src => src.UserId))
                 .ForMember(dest => dest.Role,
                     opt => opt.MapFrom(src => src.Role.Name))
@@ -59,6 +59,11 @@ namespace API.Helpers
                     opt => opt.MapFrom(src => src.User.Photo.Url))
                 .ForMember(dest => dest.Name,
                     opt => opt.MapFrom(src => src.User.Name));
+
+            CreateMap<BankRegisterDto, Address>();
+            CreateMap<BankRegisterDto, Bank>()
+                .ForMember(dest => dest.Address,
+                    opt => opt.MapFrom(src => src));
 
             CreateMap<DateTime, DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
         }

@@ -1,0 +1,44 @@
+<div class="card my-2">
+    <div class="card-header text-primary text-center"><i class="fa fa-sign-in"></i> Register Bank</div>
+    <div class="card-body">
+        <form [formGroup]="bankRegisterForm"
+            (ngSubmit)="!bankRegisterForm.pristine && registerBank()">
+            <div class="row">
+                <app-form-input class="col-md-6" [label]="'Name'" formControlName="name">
+                    <i class="fa fa-id-card"></i>
+                </app-form-input>
+                <app-form-input class="col-md-6" [label]="'Website'" formControlName="website">
+                    <i class="fa fa-globe"></i>
+                </app-form-input>
+                <app-form-input class="col-md-6" [label]="'Email'" formControlName="email">
+                    <i class="fa fa-envelope-open"></i>
+                </app-form-input>
+                <app-form-input class="col-md-6" [label]="'Phone'" formControlName="phoneNumber">
+                    <i class="fa fa-phone"></i>
+                </app-form-input>
+                <app-form-input class="col-md-6" [label]="'Area'" formControlName="area">
+                    <i class="fa fa-street-view"></i>
+                </app-form-input>
+                <app-form-input class="col-md-6" [label]="'City'" formControlName="city">
+                    <i class="fa fa-university"></i>
+                </app-form-input>
+                <app-form-input class="col-md-6" [label]="'State'" formControlName="state">
+                    <i class="fa fa-map"></i>
+                </app-form-input>
+                <app-form-input class="col-md-6" [label]="'Country'" formControlName="country">
+                    <i class="fa fa-flag"></i>
+                </app-form-input>
+                <app-form-input class="col-md-6" [label]="'Pincode'" formControlName="postalCode">
+                    <i class="fa fa-map-pin"></i>
+                </app-form-input>
+                <app-form-input class="col-md-6" [label]="'Bank Admin'" formControlName="bankAdmin">
+                    <i class="fa fa-user-plus"></i>
+                </app-form-input>
+                <div class="text-center mt-2">
+                    <button [disabled]="bankRegisterForm.pristine || bankRegisterForm.invalid" class="btn btn-primary"
+                        type="submit"><i class="fa fa-check"></i> Register</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
