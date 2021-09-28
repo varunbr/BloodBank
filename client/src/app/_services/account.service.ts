@@ -54,4 +54,10 @@ export class AccountService {
   getDecodedToken(token: string) {
     return JSON.parse(atob(token.split('.')[1]));
   }
+
+  userExist(userName: string) {
+    return this.http.get(environment.apiUrl + 'account/' + userName, {
+      headers: { BackgroundLoad: 'true' },
+    });
+  }
 }

@@ -22,10 +22,12 @@
         <button class="btn btn-sm btn-primary" type="submit"><i class="fa fa-filter"></i> Filter</button>
     </div>
     <div class="form-group px-1 p-sm-2">
-        <button class="btn btn-sm btn-info" type="button" (click)="resetFilter()"><i class="fa fa-undo"></i> Reset</button>
+        <button class="btn btn-sm btn-info" type="button" (click)="resetFilter()"><i class="fa fa-undo"></i>
+            Reset</button>
     </div>
     <div class="form-group px-1 p-sm-2">
-        <button class="btn btn-sm btn-outline-primary" type="button" (click)="openModal(modal)"><i class="fa fa-user-plus"></i> Add Role</button>
+        <button class="btn btn-sm btn-outline-primary" type="button" (click)="openModal(modal)"><i
+                class="fa fa-user-plus"></i> Add Role</button>
     </div>
 </form>
 
@@ -56,8 +58,8 @@
                     {{user.role}}
                 </td>
                 <td class="align-middle">
-                    <button [disabled]="currentUser.userName === user.userName" class="btn btn-sm btn-danger ml-2" (click)="removeRole(user, i)"><i
-                            class="fa fa-trash"></i></button>
+                    <button [disabled]="currentUser.userName === user.userName" class="btn btn-sm btn-danger ml-2"
+                        (click)="removeRole(user, i)"><i class="fa fa-trash"></i></button>
                 </td>
             </tr>
         </tbody>
@@ -80,9 +82,18 @@
                             Username
                         </div>
                         <div class="col-sm-9">
-                            <input type="text" required class="form-control form-control-sm"
-                                [(ngModel)]="adminRole.userName" name="userName" placeholder="Enter Username"
-                                id="userName">
+                            <div class="form-group">
+                                <input [class.is-valid]="name.valid  && name.dirty"
+                                    [class.is-invalid]="name.invalid && name.dirty" type="text" required
+                                    class="form-control form-control-sm" [(ngModel)]="adminRole.userName"
+                                    appUserNameValidator="true" name="userName" id="userName"
+                                    value="{{adminRole.userName}}" #name="ngModel" placeholder="Enter Username">
+                                <div class="valid-feedback" *ngIf="rolesForm.controls['userName']?.valid">
+                                    Username available.</div>
+                                <div class="invalid-feedback"
+                                    *ngIf="rolesForm.controls['userName']?.errors?.alreadyExist === false">
+                                    Username not available.</div>
+                            </div>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -99,7 +110,7 @@
                     </div>
                     <div class="row mt-2">
                         <div class="col-12 mt-4 mt-md-0 d-flex justify-content-center">
-                            <button [disabled]="rolesForm.invalid" class="btn btn-sm btn-info" type="submit"><i
+                            <button [disabled]="!rolesForm.valid" class="btn btn-sm btn-info" type="submit"><i
                                     class="fa fa-check"></i> Add Role</button>
                         </div>
                     </div>

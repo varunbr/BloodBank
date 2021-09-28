@@ -39,6 +39,7 @@ namespace API.Controllers
 
             var user = _mapper.Map<AppUser>(registerDto);
             user.UserName = registerDto.UserName.ToLower();
+            user.Photo = new Photo();
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
             if (!result.Succeeded) return BadRequest(result.Errors);
@@ -74,15 +75,16 @@ namespace API.Controllers
             return new UserDto
             {
                 Name = user.Name,
-                PhotoUrl = user.Photo.Url,
+                PhotoUrl = user.Photo?.Url,
                 Token = token,
                 UserName = user.UserName
             };
         }
 
-        private Task<bool> UserNameExist(string userName)
+        [HttpGet("{userName}")]
+        public async Task<bool> UserNameExist(string userName)
         {
-            return _userManager.Users.AnyAsync(u => u.UserName == userName.ToLower());
+            return await _userManager.Users.AnyAsync(u => u.UserName == userName);
         }
     }
 }
