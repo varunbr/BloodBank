@@ -257,8 +257,8 @@ namespace API.Data
             {
                 UserId = userId,
                 Type = "BankAdmin"
-
             });
+            bank.LastUpdated = DateTime.UtcNow;
             DataContext.Banks.Add(bank);
             await DataContext.SaveChangesAsync();
             await UpdateUserRole(new[] { userId });

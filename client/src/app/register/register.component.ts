@@ -8,6 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { validateUserExistence } from '../directives/user-name-validator.directive';
+import { getBloodGroupList } from '../_modals/utility';
 import { AccountService } from '../_services/account.service';
 
 @Component({
@@ -18,6 +20,7 @@ import { AccountService } from '../_services/account.service';
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   validationErrors: string[] = [];
+  maxDate: Date;
 
   constructor(
     private fb: FormBuilder,
@@ -25,6 +28,8 @@ export class RegisterComponent implements OnInit {
     private router: Router
   ) {
     this.initilizeForm();
+    this.maxDate = new Date();
+    this.maxDate.setFullYear(this.maxDate.getFullYear() - 15);
   }
 
   ngOnInit(): void {}
@@ -32,7 +37,11 @@ export class RegisterComponent implements OnInit {
   initilizeForm() {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
-      userName: ['', Validators.required],
+      userName: [
+        '',
+        [Validators.required, Validators.minLength(3)],
+        validateUserExistence(this.accountService, false),
+      ],
       phoneNumber: ['', Validators.required],
       email: ['', Validators.email],
       dateOfBirth: ['', Validators.required],
@@ -82,38 +91,5 @@ export class RegisterComponent implements OnInit {
     );
   }
 
-  bloodGroupList = [
-    {
-      name: 'O+',
-      value: 'Op',
-    },
-    {
-      name: 'O-',
-      value: 'On',
-    },
-    {
-      name: 'A+',
-      value: 'Ap',
-    },
-    {
-      name: 'A-',
-      value: 'An',
-    },
-    {
-      name: 'B+',
-      value: 'Bp',
-    },
-    {
-      name: 'B-',
-      value: 'Bn',
-    },
-    {
-      name: 'AB+',
-      value: 'ABp',
-    },
-    {
-      name: 'AB-',
-      value: 'ABn',
-    },
-  ];
+  bloodGroupList = getBloodGroupList();
 }
