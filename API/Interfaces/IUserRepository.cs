@@ -10,6 +10,7 @@ namespace API.Interfaces
         Task<PagedList<MemberDto>> GetUsers(UserParams userParams);
         Task<IList<string>> GetUserNames(IEnumerable<string> userNames);
         Task<int> GetUserIdByUserName(string userName);
+        Task<bool> LogUserActive(int id);
         Task<string> GetUserNameById(int id);
     }
 }

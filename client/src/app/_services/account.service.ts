@@ -20,6 +20,7 @@ export class AccountService {
       .pipe(
         map((user: User) => {
           if (user) {
+            console.log(user);
             this.setUser(user);
           }
         })
@@ -28,6 +29,12 @@ export class AccountService {
 
   setUser(user: User) {
     user.roles = [];
+    if (!user.photoUrl) {
+      user.photoUrl =
+        user.gender === 'Female'
+          ? './assets/images/female.png'
+          : './assets/images/male.png';
+    }
     const roles = this.getDecodedToken(user.token).role;
     Array.isArray(roles) ? (user.roles = roles) : (user.roles = [roles]);
     localStorage.setItem('user', JSON.stringify(user));

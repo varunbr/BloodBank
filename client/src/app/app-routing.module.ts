@@ -12,19 +12,57 @@ import { BankUpdateComponent } from './moderator/bank-update/bank-update.compone
 import { BankEditComponent } from './moderator/bank-edit/bank-edit.component';
 import { AdministrationComponent } from './moderator/administration/administration.component';
 import { BankRegisterComponent } from './moderator/bank-register/bank-register.component';
+import { TestErrorsComponent } from './errors/test-errors/test-errors.component';
+import { ServerErrorComponent } from './errors/server-error/server-error.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
+  { path: '', component: HomeComponent },
+  {
+    path: '',
+    runGuardsAndResolvers: 'always',
+    canActivate: [AuthGuard],
+    data: { roles: ['Member'] },
+    children: [
+      { path: 'donors', component: DonorsListComponent },
+      { path: 'banks', component: BanksListComponent },
+      {
+        path: 'moderate',
+        canActivate: [AuthGuard],
+        data: { roles: ['BankAdmin', 'BankModerator'] },
+        children: [
+          { path: 'bank/:id', component: BankUpdateComponent },
+          { path: '', component: ModerateComponent },
+        ],
+      },
+      {
+        path: 'admin',
+        canActivate: [AuthGuard],
+        data: { roles: ['Admin', 'Moderator'] },
+        children: [
+          { path: 'bank-register', component: BankRegisterComponent },
+          { path: 'bank/:id', component: BankEditComponent },
+          { path: '', component: AdminComponent },
+        ],
+      },
+      {
+        path: 'administration',
+        component: AdministrationComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['Admin'] },
+      },
+      {
+        path: 'test',
+        component: TestErrorsComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['Admin'] },
+      },
+    ],
+  },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'donors', component: DonorsListComponent },
-  { path: 'banks', component: BanksListComponent },
-  { path: 'moderate/:id', component: BankUpdateComponent },
-  { path: 'moderate', component: ModerateComponent },
-  { path: 'admin', component: AdminComponent },
-  { path: 'admin/bank-register', component: BankRegisterComponent },
-  { path: 'admin/:id', component: BankEditComponent },
-  { path: 'administration', component: AdministrationComponent },
   { path: 'about', component: AboutComponent },
+  { path: 'server-error', component: ServerErrorComponent },
   { path: '**', component: HomeComponent },
 ];
 

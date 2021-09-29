@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
@@ -45,6 +46,13 @@ namespace API.Data
             return await DataContext.Users.Where(u => u.Id == id)
                 .Select(u => u.UserName)
                 .SingleAsync();
+        }
+
+        public async Task<bool> LogUserActive(int id)
+        {
+            var user = await DataContext.Users.FindAsync(id);
+            user.LastActive = DateTime.UtcNow;
+            return await DataContext.SaveChangesAsync() > 0;
         }
     }
 }
