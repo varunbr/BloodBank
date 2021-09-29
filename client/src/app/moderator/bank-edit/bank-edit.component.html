@@ -121,7 +121,7 @@
                             <div class="col d-flex justify-content-end flex-row">
                                 <button type="button" class="btn btn-info mr-4" (click)="addRole(rolesForm)">
                                     <i class="fa fa-user-plus"></i> Add User</button>
-                                <button type="submit" [disabled]="rolesForm.pristine || rolesForm.invalid"
+                                <button type="submit" [disabled]="rolesForm.pristine || !rolesForm.valid"
                                     class="btn btn-primary mr-4"><i class="fa fa-check"></i> Update</button>
                             </div>
                         </div>

@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { NavigationExtras, Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { UserProfile } from '../_modals/profile';
 import { User } from '../_modals/user';
 
 @Injectable({
@@ -12,7 +14,7 @@ export class AccountService {
   private userSource = new ReplaySubject<User>(1);
   user$ = this.userSource.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   login(model: any) {
     return this.http
@@ -20,7 +22,6 @@ export class AccountService {
       .pipe(
         map((user: User) => {
           if (user) {
-            console.log(user);
             this.setUser(user);
           }
         })
@@ -56,6 +57,8 @@ export class AccountService {
   logout() {
     localStorage.removeItem('user');
     this.userSource.next();
+    let extras: NavigationExtras = { state: { reload: true } };
+    this.router.navigateByUrl('/login', extras);
   }
 
   getDecodedToken(token: string) {
@@ -66,5 +69,16 @@ export class AccountService {
     return this.http.get(environment.apiUrl + 'account/' + userName, {
       headers: { BackgroundLoad: 'true' },
     });
+  }
+
+  getProfile() {
+    return this.http.get<UserProfile>(environment.apiUrl + 'account/profile');
+  }
+
+  updateProfile(body) {
+    return this.http.post<UserProfile>(
+      environment.apiUrl + 'account/profile',
+      body
+    );
   }
 }

@@ -65,6 +65,20 @@ namespace API.Helpers
                 .ForMember(dest => dest.Address,
                     opt => opt.MapFrom(src => src));
 
+            CreateMap<Address, UserProfileDto>();
+            CreateMap<Photo, UserProfileDto>();
+            CreateMap<AppUser, UserProfileDto>()
+                .IncludeMembers(s => s.Address, s => s.Photo);
+
+            CreateMap<UserProfileDto, Address>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
+            CreateMap<UserProfileDto, AppUser>()
+                .ForMember(dest => dest.Address,
+                    opt => opt.MapFrom(src => src))
+                .ForMember(dest => dest.Photo, opt => opt.Ignore())
+                .ForMember(dest => dest.UserName,
+                    opt => opt.MapFrom(src => src.UserName.ToLower()));
+
             CreateMap<DateTime, DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
         }
     }

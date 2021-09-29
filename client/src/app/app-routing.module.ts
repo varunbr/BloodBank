@@ -15,6 +15,7 @@ import { BankRegisterComponent } from './moderator/bank-register/bank-register.c
 import { TestErrorsComponent } from './errors/test-errors/test-errors.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { AuthGuard } from './guards/auth.guard';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -26,6 +27,7 @@ const routes: Routes = [
     children: [
       { path: 'donors', component: DonorsListComponent },
       { path: 'banks', component: BanksListComponent },
+      { path: 'profile', component: EditProfileComponent },
       {
         path: 'moderate',
         canActivate: [AuthGuard],

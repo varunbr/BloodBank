@@ -12,5 +12,7 @@ namespace API.Interfaces
         Task<int> GetUserIdByUserName(string userName);
         Task<bool> LogUserActive(int id);
         Task<string> GetUserNameById(int id);
+        Task<UserProfileDto> GetProfile(int id);
+        Task<UserProfileDto> UpdateProfile(UserProfileDto profileDto);
     }
 }

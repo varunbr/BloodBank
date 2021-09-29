@@ -31,10 +31,12 @@ export class UserNameValidatorDirective implements AsyncValidator {
 }
 export function validateUserExistence(
   accountService: AccountService,
-  exist = true
+  exist = true,
+  currentUserName = ''
 ): AsyncValidatorFn {
   return (control: AbstractControl) => {
     if (control?.value && control.dirty) {
+      if (currentUserName === control.value) return of(null);
       return accountService.userExist(control.value).pipe(
         map((response) => {
           if (response.toString() === exist.toString()) return null;

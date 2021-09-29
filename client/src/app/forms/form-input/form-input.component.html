@@ -1,11 +1,21 @@
 <div class="row form-group">
     <div class="col-sm-4 col-xl-3">
-        <label for="{{label}}" class="text-primary mt-2"><ng-content></ng-content> {{label}}</label>
+        <label for="{{label}}" class="text-primary mt-2">
+            <ng-content></ng-content> {{label}}
+        </label>
     </div>
     <div class="col-sm-8 col-xl-9 text-secondary">
         <input type="{{type}}" id="{{label}}" [class.is-invalid]="ngControl.invalid && ngControl.touched"
-            placeholder="{{label}}" class="form-control" [formControl]="ngControl.control">
+            [class.is-valid]="ngControl.valid && label === 'UserName' && ngControl.dirty" placeholder="{{label}}"
+            class="form-control" [formControl]="ngControl.control">
         <div class="invalid-feedback" *ngIf="ngControl.control.errors?.required">Please enter a {{label}}.</div>
         <div class="invalid-feedback" *ngIf="ngControl.control.errors?.email">Please enter valid {{label}}.</div>
+        <div class="invalid-feedback" *ngIf="ngControl.control.errors?.alreadyExist === true">Username already exist.
+        </div>
+        <div class="valid-feedback" *ngIf="ngControl.valid">{{label}} available.</div>
+        <div class="invalid-feedback" *ngIf="ngControl.control.errors?.minlength">
+            {{label}} must be atleast {{ngControl.control.errors.minlength.requiredLength}} characters.</div>
+        <div class="invalid-feedback" *ngIf="ngControl.control.errors?.maxlength">
+            {{label}} must be atmost {{ngControl.control.errors.maxlength.requiredLength}} characters.</div>
     </div>
 </div>
