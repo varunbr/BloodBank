@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,14 +20,16 @@ namespace API.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
+        private readonly IUserRepository _userRepository;
 
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
-            IMapper mapper, ITokenService tokenService)
+            IMapper mapper, ITokenService tokenService, IUserRepository userRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _mapper = mapper;
             _tokenService = tokenService;
+            _userRepository = userRepository;
         }
 
         [HttpPost("register")]
@@ -89,6 +93,23 @@ namespace API.Controllers
         public async Task<bool> UserNameExist(string userName)
         {
             return await _userManager.Users.AnyAsync(u => u.UserName == userName);
+        }
+
+        [Authorize]
+        [HttpGet("profile")]
+        public async Task<ActionResult> GetUserProfile()
+        {
+            var id = HttpContext.User.GetUserId();
+            return Ok(await _userRepository.GetProfile(id));
+        }
+
+        [Authorize]
+        [HttpPost("profile")]
+        public async Task<ActionResult> UpdateUserProfile(UserProfileDto profileDto)
+        {
+            profileDto.Id = HttpContext.User.GetUserId();
+            var profile = await _userRepository.UpdateProfile(profileDto);
+            return profile == null ? BadRequest("Failed to update.") : Ok(profile);
         }
     }
 }

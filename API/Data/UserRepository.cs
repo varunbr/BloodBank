@@ -54,5 +54,29 @@ namespace API.Data
             user.LastActive = DateTime.UtcNow;
             return await DataContext.SaveChangesAsync() > 0;
         }
+
+        public async Task<UserProfileDto> GetProfile(int id)
+        {
+            var user = await DataContext.Users.AsQueryable()
+                .Where(u => u.Id == id)
+                .ProjectTo<UserProfileDto>(Mapper.ConfigurationProvider)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+            return user;
+        }
+
+        public async Task<UserProfileDto> UpdateProfile(UserProfileDto profileDto)
+        {
+            var user = await DataContext.Users
+                .Include(x => x.Address)
+                .Include(x => x.Photo)
+                .FirstOrDefaultAsync(x => x.Id == profileDto.Id);
+            Mapper.Map(profileDto, user);
+
+            if (await DataContext.SaveChangesAsync() <= 0) return null;
+            Mapper.Map(user, profileDto);
+            return profileDto;
+
+        }
     }
 }

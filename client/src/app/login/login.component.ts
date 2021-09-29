@@ -11,7 +11,12 @@ export class LoginComponent implements OnInit {
   modal: any = {};
   loggingIn: boolean = false;
 
-  constructor(private accountService: AccountService, private router: Router) {}
+  constructor(private accountService: AccountService, private router: Router) {
+    const state = this.router.getCurrentNavigation()?.extras?.state;
+    if (state?.reload) {
+      window.location.reload();
+    }
+  }
 
   ngOnInit(): void {}
 

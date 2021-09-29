@@ -31,6 +31,8 @@ import { UserNameValidatorDirective } from './directives/user-name-validator.dir
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { TestErrorsComponent } from './errors/test-errors/test-errors.component';
 import { HasRoleDirective } from './directives/has-role.directive';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { FormDateInputComponent } from './forms/form-date-input/form-date-input.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +58,8 @@ import { HasRoleDirective } from './directives/has-role.directive';
     ServerErrorComponent,
     TestErrorsComponent,
     HasRoleDirective,
+    EditProfileComponent,
+    FormDateInputComponent,
   ],
   imports: [
     BrowserModule,
