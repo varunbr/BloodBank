@@ -28,6 +28,9 @@ import { FormInputComponent } from './forms/form-input/form-input.component';
 import { AdministrationComponent } from './moderator/administration/administration.component';
 import { BankRegisterComponent } from './moderator/bank-register/bank-register.component';
 import { UserNameValidatorDirective } from './directives/user-name-validator.directive';
+import { ServerErrorComponent } from './errors/server-error/server-error.component';
+import { TestErrorsComponent } from './errors/test-errors/test-errors.component';
+import { HasRoleDirective } from './directives/has-role.directive';
 
 @NgModule({
   declarations: [
@@ -50,6 +53,9 @@ import { UserNameValidatorDirective } from './directives/user-name-validator.dir
     AdministrationComponent,
     BankRegisterComponent,
     UserNameValidatorDirective,
+    ServerErrorComponent,
+    TestErrorsComponent,
+    HasRoleDirective,
   ],
   imports: [
     BrowserModule,

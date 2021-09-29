@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using API.DTOs;
@@ -40,6 +41,7 @@ namespace API.Controllers
             var user = _mapper.Map<AppUser>(registerDto);
             user.UserName = registerDto.UserName.ToLower();
             user.Photo = new Photo();
+            user.LastActive = DateTime.UtcNow;
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
             if (!result.Succeeded) return BadRequest(result.Errors);
@@ -54,6 +56,7 @@ namespace API.Controllers
                 Name = user.Name,
                 PhotoUrl = user.Photo?.Url,
                 Token = token,
+                Gender = user.Gender,
                 UserName = user.UserName
             };
         }
@@ -77,6 +80,7 @@ namespace API.Controllers
                 Name = user.Name,
                 PhotoUrl = user.Photo?.Url,
                 Token = token,
+                Gender = user.Gender,
                 UserName = user.UserName
             };
         }

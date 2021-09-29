@@ -29,7 +29,7 @@ namespace API.Helpers
 
         public static IEnumerable<string> GetGenderList()
         {
-            return new[] { "male", "female" };
+            return new[] { "Male", "Female" };
         }
 
         public static IEnumerable<string> GetBloodGroupList()

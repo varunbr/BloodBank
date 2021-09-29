@@ -1,0 +1,15 @@
+<div>
+    <button (click)="get400Error()" class="btn btn-outline-primary m-3">400 BadRequest</button>
+    <button (click)="get400ValidationError()" class="btn btn-outline-primary m-3">400 Validation</button>
+    <button (click)="get401Error()" class="btn btn-outline-primary m-3">401 Unauthorized</button>
+    <button (click)="get403Error()" class="btn btn-outline-primary m-3">403 Forbid</button>
+    <button (click)="get404Error()" class="btn btn-outline-primary m-3">404 NotFound</button>
+    <button (click)="get500Error()" class="btn btn-outline-primary m-3">500 ServerError</button>
+    <button (click)="get0Error()" class="btn btn-outline-primary m-3">Invalid URL</button>
+</div>
+
+<div class="row mt-5" *ngIf="validationErrors.length > 0">
+    <ul class="text-danger">
+        <li *ngFor="let error of validationErrors">{{error}}</li>
+    </ul>
+</div>

@@ -1,38 +1,43 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-primary">
     <div class="container">
         <a class="navbar-brand" href="#" routerLink='/'>Blood Bank App</a>
-        <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed" data-toggle="collapse" 
-            [attr.aria-expanded]="!isCollapsed" aria-controls="collapseBasic" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed" data-toggle="collapse"
+            [attr.aria-expanded]="!isCollapsed" aria-controls="collapseBasic" aria-expanded="false"
+            aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-    
+
         <div id="collapseBasic" [collapse]="isCollapsed" class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
-                <li *ngIf="accountService.user$ | async" class="nav-item">
-                    <a class="nav-link" href="#" routerLink='/donors'>Donors</a>
+                <li *appHasRole="['Member']" class="nav-item">
+                    <a class="nav-link" href="#" routerLink='/donors' routerLinkActive='active'>Donors</a>
                 </li>
-                <li *ngIf="accountService.user$ | async" class="nav-item">
-                    <a class="nav-link" href="#" routerLink='/banks'>Banks</a>
+                <li *appHasRole="['Member']" class="nav-item">
+                    <a class="nav-link" href="#" routerLink='/banks' routerLinkActive='active'>Banks</a>
                 </li>
-                <li *ngIf="accountService.user$ | async" class="nav-item">
-                    <a class="nav-link" href="#" routerLink='/moderate'>Moderate</a>
+                <li *appHasRole="['BankAdmin','BankModerator']" class="nav-item">
+                    <a class="nav-link" href="#" routerLink='/moderate' routerLinkActive='active'>Moderate</a>
                 </li>
-                <li *ngIf="accountService.user$ | async" class="nav-item">
-                    <a class="nav-link" href="#" routerLink='/admin'>Admin</a>
+                <li *appHasRole="['Admin','Moderator']" class="nav-item">
+                    <a class="nav-link" href="#" routerLink='/admin' routerLinkActive='active'>Admin</a>
                 </li>
-                <li *ngIf="accountService.user$ | async" class="nav-item">
-                    <a class="nav-link" href="#" routerLink='/administration'>Administration</a>
+                <li *appHasRole="['Admin']" class="nav-item">
+                    <a class="nav-link" href="#" routerLink='/administration' routerLinkActive='active'>Administration</a>
+                </li>
+                <li *appHasRole="['Admin']" class="nav-item">
+                    <a class="nav-link" href="#" routerLink='/test' routerLinkActive='active'>Test</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" routerLink='/about'>About</a>
+                    <a class="nav-link" href="#" routerLink='/about' routerLinkActive='active'>About</a>
                 </li>
             </ul>
-            
+
             <div *ngIf="(accountService.user$ | async) as user" class="nav-item dropdown" dropdown>
                 <a class="nav-link text-light dropdown-toggle" dropdownToggle id="dropdownId" data-toggle="dropdown"
-                 aria-haspopup="true" aria-expanded="false">
-                 <img src="{{user.photoUrl || '../../../assets/images/profile.png'}}" style="max-height: 5vmin;" class="rounded-circle"/>
-                 {{user.name || user.userName}}
+                    aria-haspopup="true" aria-expanded="false">
+                    <img src="{{user.photoUrl || './assets/images/profile.png'}}" style="max-height: 5vmin;"
+                        class="rounded-circle" />
+                    {{user.name || user.userName}}
                 </a>
                 <div class="dropdown-menu mt-2" *dropdownMenu aria-labelledby="dropdownId">
                     <a class="dropdown-item">Edit Profile</a>
@@ -47,7 +52,7 @@
                 <li class="nav-item">
                     <button class="btn btn-info mx-md-1 my-1" routerLink='/register' type="button">Register</button>
                 </li>
-            </ul>           
+            </ul>
         </div>
     </div>
-  </nav>
+</nav>

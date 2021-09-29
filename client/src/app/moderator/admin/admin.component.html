@@ -20,10 +20,10 @@
     </div>
 </form>
 <div class="list-group">
-    <a routerLink="/admin/{{bank.id}}" class="list-group-item list-group-item-action" *ngFor="let bank of modals">
+    <a routerLink="/admin/bank/{{bank.id}}" class="list-group-item list-group-item-action" *ngFor="let bank of modals">
         <div class="row">
             <div class="image col-12 col-md-1 d-flex align-items-center align-items-md-start flex-column">
-                <img src="{{bank.photoUrl || './assets/images/profile.png'}}" class="img-fluid mb-2 mb-md-0"
+                <img src="{{bank.photoUrl || './assets/images/hospital.png'}}" class="img-fluid mb-2 mb-md-0"
                     style="max-height: 50px;" />
             </div>
             <div class="col-12 col-md-11">
