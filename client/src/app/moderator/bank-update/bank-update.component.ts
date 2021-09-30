@@ -63,13 +63,38 @@ export class BankUpdateComponent implements OnInit {
       });
   }
 
-  updateRoles(ngForm: NgForm){
+  updateRoles(ngForm: NgForm) {
     this.moderateService
-      .updateBankRoles({ bankId: this.bank.id, moderators: this.bank.moderators })
+      .updateBankRoles({
+        bankId: this.bank.id,
+        moderators: this.bank.moderators,
+      })
       .subscribe((response) => {
         this.bank = JSON.parse(JSON.stringify(response));
         ngForm.reset();
         this.toastr.success('Roles Updated');
       });
+  }
+
+  handleFileInput(files: FileList) {
+    if (files.length > 0) {
+      this.moderateService
+        .changePhoto(files.item(0), this.bank)
+        .subscribe((response) => {
+          this.bank.photoUrl = response.photoUrl;
+          this.toastr.success('Photo updated.');
+        });
+    }
+  }
+
+  removePhoto() {
+    if (!this.bank.photoUrl) {
+      this.toastr.info('Bank photo already removed.');
+      return;
+    }
+    this.moderateService.removePhoto(this.bank).subscribe(() => {
+      this.bank.photoUrl = null;
+      this.toastr.success('Photo removed.');
+    });
   }
 }

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.DTOs;
+using API.Entities;
 using API.Helpers;
+using Microsoft.AspNetCore.Http;
 
 namespace API.Interfaces
 {
@@ -14,5 +16,7 @@ namespace API.Interfaces
         Task<string> GetUserNameById(int id);
         Task<UserProfileDto> GetProfile(int id);
         Task<UserProfileDto> UpdateProfile(UserProfileDto profileDto);
+        Task<string> UpdateUserPhoto(int userId, IFormFile file);
+        Task<bool> DeleteUserPhoto(int userId);
     }
 }

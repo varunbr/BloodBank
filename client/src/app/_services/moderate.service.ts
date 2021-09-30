@@ -48,4 +48,32 @@ export class ModerateService extends BasePageService<Bank, BankParams> {
       })
     );
   }
+
+  changePhoto(fileToUpload: File, bank: Bank) {
+    const formData: FormData = new FormData();
+    formData.append('file', fileToUpload);
+    return this.http
+      .post<any>(this.baseUrl + '/' + bank.id + '/change-photo', formData)
+      .pipe(
+        map((response) => {
+          bank.photoUrl = response.photoUrl;
+          this.cacheModal(bank);
+          return response;
+        })
+      );
+  }
+
+  removePhoto(bank: Bank) {
+    const formData: FormData = new FormData();
+    formData.append('remove', 'true');
+    return this.http
+      .post<any>(this.baseUrl + '/' + bank.id + '/change-photo', formData)
+      .pipe(
+        map((response) => {
+          bank.photoUrl = response.photoUrl;
+          this.cacheModal(bank);
+          return response;
+        })
+      );
+  }
 }

@@ -45,7 +45,7 @@ export class EditProfileComponent implements OnInit {
       bloodGroup: [this.user.bloodGroup, Validators.required],
       dateOfBirth: [new Date(this.user.dateOfBirth), Validators.required],
       phoneNumber: [this.user.phoneNumber, Validators.required],
-      email: [this.user.email, [Validators.email, Validators.required]],
+      email: [this.user.email, [Validators.email]],
       area: [this.user.area, Validators.required],
       city: [this.user.city, Validators.required],
       state: [this.user.state, Validators.required],
@@ -63,5 +63,25 @@ export class EditProfileComponent implements OnInit {
         this.initilizeForm();
         this.toastr.success('Profile updated.');
       });
+  }
+
+  handleFileInput(files: FileList) {
+    if (files.length > 0) {
+      this.accountService.changePhoto(files.item(0)).subscribe((response) => {
+        this.user.photoUrl = response.photoUrl;
+        this.toastr.success('Photo updated.');
+      });
+    }
+  }
+
+  removePhoto() {
+    if (!this.user.photoUrl) {
+      this.toastr.info('Photo already removed.');
+      return;
+    }
+    this.accountService.removePhoto().subscribe(() => {
+      this.user.photoUrl = null;
+      this.toastr.success('Photo removed.');
+    });
   }
 }

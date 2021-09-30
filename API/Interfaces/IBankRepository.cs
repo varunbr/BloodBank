@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using API.DTOs;
 using API.Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
 namespace API.Interfaces
@@ -24,5 +25,7 @@ namespace API.Interfaces
         Task<IdentityResult> AddAdminRole(AdminRoleDto roleDto);
         Task<IdentityResult> RemoveAdminRole(AdminRoleDto roleDto);
         Task<int> RegisterBank(BankRegisterDto registerDto);
+        Task<string> UpdateBankPhoto(int bankId, IFormFile file);
+        Task<bool> DeleteBankPhoto(int bankId);
     }
 }

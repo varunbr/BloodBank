@@ -8,7 +8,9 @@ using API.Extensions;
 using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -89,6 +91,28 @@ namespace API.Controllers
             };
         }
 
+        [Authorize]
+        [HttpPost("token-update")]
+        public async Task<ActionResult<UserDto>> GetUpdatedToken()
+        {
+            var id = HttpContext.User.GetUserId();
+            var user = await _userManager.Users
+                .Include(u => u.Photo)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var token = await _tokenService.CreateToken(user, accessToken);
+
+            return new UserDto
+            {
+                Name = user.Name,
+                PhotoUrl = user.Photo?.Url,
+                Token = token,
+                Gender = user.Gender,
+                UserName = user.UserName
+            };
+        }
+
         [HttpGet("{userName}")]
         public async Task<bool> UserNameExist(string userName)
         {
@@ -110,6 +134,21 @@ namespace API.Controllers
             profileDto.Id = HttpContext.User.GetUserId();
             var profile = await _userRepository.UpdateProfile(profileDto);
             return profile == null ? BadRequest("Failed to update.") : Ok(profile);
+        }
+
+        [Authorize]
+        [HttpPost("change-photo")]
+        public async Task<ActionResult> UpdateUserPhoto([FromForm] PhotoUpdateDto updateDto)
+        {
+            var id = HttpContext.User.GetUserId();
+            if (updateDto.Remove)
+            {
+                return await _userRepository.DeleteUserPhoto(id)
+                    ? Ok(new { PhotoUrl = "" })
+                    : BadRequest("Failed to change photo.");
+            }
+            var result = await _userRepository.UpdateUserPhoto(id, updateDto.File);
+            return string.IsNullOrEmpty(result) ? BadRequest("Failed to change photo.") : Ok(new { PhotoUrl = result });
         }
     }
 }
