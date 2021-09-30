@@ -39,7 +39,9 @@ namespace API
                 .AddEntityFrameworkStores<DataContext>();
 
             services.AddScoped<LogActivity>();
+            services.Configure<CloudinarySettings>(_config.GetSection("CloudinarySettings"));
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IBankRepository, BankRepository>();
             services.AddAuthentication(options =>

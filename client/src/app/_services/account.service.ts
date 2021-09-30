@@ -30,15 +30,10 @@ export class AccountService {
 
   setUser(user: User) {
     user.roles = [];
-    if (!user.photoUrl) {
-      user.photoUrl =
-        user.gender === 'Female'
-          ? './assets/images/female.png'
-          : './assets/images/male.png';
-    }
     const roles = this.getDecodedToken(user.token).role;
     Array.isArray(roles) ? (user.roles = roles) : (user.roles = [roles]);
     localStorage.setItem('user', JSON.stringify(user));
+    this.userSource.next(null);
     this.userSource.next(user);
   }
 
@@ -76,9 +71,49 @@ export class AccountService {
   }
 
   updateProfile(body) {
-    return this.http.post<UserProfile>(
-      environment.apiUrl + 'account/profile',
-      body
-    );
+    return this.http
+      .post<UserProfile>(environment.apiUrl + 'account/profile', body)
+      .pipe(
+        map((response) => {
+          this.updateToken();
+          return response;
+        })
+      );
+  }
+
+  updateToken() {
+    this.http
+      .post<User>(environment.apiUrl + 'account/token-update', {})
+      .subscribe((user) => {
+        if (user) {
+          this.setUser(user);
+        }
+      });
+  }
+
+  changePhoto(fileToUpload: File) {
+    const formData: FormData = new FormData();
+    formData.append('file', fileToUpload);
+    return this.http
+      .post<any>(environment.apiUrl + 'account/change-photo', formData)
+      .pipe(
+        map((response) => {
+          this.updateToken();
+          return response;
+        })
+      );
+  }
+
+  removePhoto() {
+    const formData: FormData = new FormData();
+    formData.append('remove', 'true');
+    return this.http
+      .post<any>(environment.apiUrl + 'account/change-photo', formData)
+      .pipe(
+        map((response) => {
+          this.updateToken();
+          return response;
+        })
+      );
   }
 }

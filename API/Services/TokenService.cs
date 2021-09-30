@@ -24,7 +24,7 @@ namespace API.Services
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
         }
 
-        public async Task<string> CreateToken(AppUser user)
+        public async Task<string> CreateToken(AppUser user, string existingToken = null)
         {
             var claims = new List<Claim>
             {
@@ -33,19 +33,29 @@ namespace API.Services
             };
             var roles = await _userManager.GetRolesAsync(user);
 
-            claims.AddRange(roles.Select(role=>new Claim(ClaimTypes.Role,role)));
+            var expireDate = string.IsNullOrEmpty(existingToken)
+                ? DateTime.Now.AddDays(1)
+                : GetExpireDate(existingToken);
+
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var cred = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 SigningCredentials = cred,
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(1)
+                Expires = expireDate
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+
+        private DateTime GetExpireDate(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler().ReadJwtToken(token);
+            return tokenHandler.ValidTo;
         }
     }
 }

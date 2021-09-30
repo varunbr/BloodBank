@@ -88,5 +88,23 @@ namespace API.Controllers
                 Ok(await _bankRepository.GetBankForModeration(updateDto.BankId, userId)) :
                 BadRequest("Failed to update roles");
         }
+
+        [HttpPost("{bankId}/change-photo"), Authorize(Roles = "BankAdmin")]
+        public async Task<ActionResult> UpdateBankPhoto([FromForm] PhotoUpdateDto updateDto, int bankId)
+        {
+            var userId = HttpContext.User.GetUserId();
+            if (!await _bankRepository.IsBankAdmin(bankId, userId))
+                return BadRequest("You are not admin for this bank!");
+
+            if (updateDto.Remove)
+            {
+                return await _bankRepository.DeleteBankPhoto(bankId)
+                    ? Ok(new { PhotoUrl = "" })
+                    : BadRequest("Failed to change photo.");
+            }
+
+            var result = await _bankRepository.UpdateBankPhoto(bankId, updateDto.File);
+            return string.IsNullOrEmpty(result) ? BadRequest("Failed to change photo.") : Ok(new { PhotoUrl = result });
+        }
     }
 }

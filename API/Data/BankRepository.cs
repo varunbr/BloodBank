@@ -9,6 +9,7 @@ using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,12 +19,14 @@ namespace API.Data
     {
         private readonly IUserRepository _userRepository;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IPhotoService _photoService;
 
         public BankRepository(DataContext dataContext, IMapper mapper, IUserRepository userRepository,
-            UserManager<AppUser> userManager) : base(dataContext, mapper)
+            UserManager<AppUser> userManager, IPhotoService photoService) : base(dataContext, mapper)
         {
             _userRepository = userRepository;
             _userManager = userManager;
+            _photoService = photoService;
         }
 
         public async Task<PagedList<BankDto>> GetBanks(BankParams bankParams)
@@ -263,6 +266,26 @@ namespace API.Data
             await DataContext.SaveChangesAsync();
             await UpdateUserRole(new[] { userId });
             return bank.Id;
+        }
+
+        public async Task<string> UpdateBankPhoto(int bankId, IFormFile file)
+        {
+            var photo = await DataContext.Photos.SingleOrDefaultAsync(p => p.BankId == bankId);
+            var result = await _photoService.UploadImage(file);
+            if (result.Error != null) return null;
+            await _photoService.DeleteImage(photo.PublicId);
+            photo.PublicId = result.PublicId;
+            photo.Url = result.SecureUrl.AbsoluteUri;
+            return await DataContext.SaveChangesAsync() > 0 ? photo.Url : null;
+        }
+
+        public async Task<bool> DeleteBankPhoto(int bankId)
+        {
+            var photo = await DataContext.Photos.SingleOrDefaultAsync(p => p.BankId == bankId);
+            await _photoService.DeleteImage(photo.PublicId);
+            photo.PublicId = null;
+            photo.Url = null;
+            return await DataContext.SaveChangesAsync() > 0;
         }
     }
 }

@@ -3,18 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
+using API.Entities;
 using API.Extensions;
 using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
 {
     public class UserRepository : Repository, IUserRepository
     {
-        public UserRepository(DataContext dataContext, IMapper mapper) : base(dataContext, mapper) { }
+        private readonly IPhotoService _photoService;
+        public UserRepository(DataContext dataContext, IMapper mapper, IPhotoService photoService) : base(dataContext, mapper)
+        {
+            _photoService = photoService;
+        }
 
 
         public async Task<PagedList<MemberDto>> GetUsers(UserParams userParams)
@@ -76,7 +82,26 @@ namespace API.Data
             if (await DataContext.SaveChangesAsync() <= 0) return null;
             Mapper.Map(user, profileDto);
             return profileDto;
+        }
 
+        public async Task<string> UpdateUserPhoto(int userId, IFormFile file)
+        {
+            var photo = await DataContext.Photos.SingleOrDefaultAsync(p => p.UserId == userId);
+            var result = await _photoService.UploadImage(file);
+            if (result.Error != null) return null;
+            await _photoService.DeleteImage(photo.PublicId);
+            photo.PublicId = result.PublicId;
+            photo.Url = result.SecureUrl.AbsoluteUri;
+            return await DataContext.SaveChangesAsync() > 0 ? photo.Url : null;
+        }
+
+        public async Task<bool> DeleteUserPhoto(int userId)
+        {
+            var photo = await DataContext.Photos.SingleOrDefaultAsync(p => p.UserId == userId);
+            await _photoService.DeleteImage(photo.PublicId);
+            photo.PublicId = null;
+            photo.Url = null;
+            return await DataContext.SaveChangesAsync() > 0;
         }
     }
 }
