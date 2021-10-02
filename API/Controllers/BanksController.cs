@@ -11,18 +11,18 @@ namespace API.Controllers
     [Authorize]
     public class BanksController : BaseController
     {
-        private readonly IBankRepository _bankRepository;
+        private readonly IUnitOfWork _uow;
 
-        public BanksController(IBankRepository bankRepository)
+        public BanksController(IUnitOfWork unitOfWork)
         {
-            _bankRepository = bankRepository;
+            _uow = unitOfWork;
         }
 
         [HttpGet]
         public async Task<ActionResult> GetBanks([FromQuery] BankParams bankParams)
         {
             bankParams.BloodGroup = HttpUtility.UrlDecode(bankParams.BloodGroup);
-            var banks = await _bankRepository.GetBanks(bankParams);
+            var banks = await _uow.BankRepository.GetBanks(bankParams);
             Response.AddPaginationHeader(banks.PageNumber, banks.PageSize, banks.TotalPages, banks.TotalCount);
             return Ok(banks);
         }

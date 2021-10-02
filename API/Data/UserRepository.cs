@@ -14,14 +14,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
 {
-    public class UserRepository : Repository, IUserRepository
+    public class UserRepository : BaseRepository, IUserRepository
     {
-        private readonly IPhotoService _photoService;
-        public UserRepository(DataContext dataContext, IMapper mapper, IPhotoService photoService) : base(dataContext, mapper)
+        public UserRepository(DataContext dataContext, IMapper mapper, IPhotoService photoService) : base(dataContext, mapper, photoService)
         {
-            _photoService = photoService;
         }
 
+        public async Task<MemberDto> GetUser(string userName)
+        {
+            return await DataContext.Users
+                .Include(u => u.Address)
+                .Include(u => u.Photo)
+                .ProjectTo<MemberDto>(Mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(u => u.UserName == userName);
+        }
 
         public async Task<PagedList<MemberDto>> GetUsers(UserParams userParams)
         {
@@ -38,20 +44,6 @@ namespace API.Data
             return await DataContext.Users.Where(u => userNames.Contains(u.UserName))
                 .Select(u => u.UserName)
                 .ToListAsync();
-        }
-
-        public async Task<int> GetUserIdByUserName(string userName)
-        {
-            return await DataContext.Users.Where(u => u.UserName == userName)
-                .Select(u => u.Id)
-                .SingleAsync();
-        }
-
-        public async Task<string> GetUserNameById(int id)
-        {
-            return await DataContext.Users.Where(u => u.Id == id)
-                .Select(u => u.UserName)
-                .SingleAsync();
         }
 
         public async Task<bool> LogUserActive(int id)
@@ -71,37 +63,24 @@ namespace API.Data
             return user;
         }
 
-        public async Task<UserProfileDto> UpdateProfile(UserProfileDto profileDto)
+        public async Task<AppUser> UpdateProfile(UserProfileDto profileDto)
         {
             var user = await DataContext.Users
                 .Include(x => x.Address)
                 .Include(x => x.Photo)
                 .FirstOrDefaultAsync(x => x.Id == profileDto.Id);
             Mapper.Map(profileDto, user);
-
-            if (await DataContext.SaveChangesAsync() <= 0) return null;
-            Mapper.Map(user, profileDto);
-            return profileDto;
+            return user;
         }
 
-        public async Task<string> UpdateUserPhoto(int userId, IFormFile file)
+        public async Task<string> UpdateUserPhoto(IFormFile file, int userId)
         {
-            var photo = await DataContext.Photos.SingleOrDefaultAsync(p => p.UserId == userId);
-            var result = await _photoService.UploadImage(file);
-            if (result.Error != null) return null;
-            await _photoService.DeleteImage(photo.PublicId);
-            photo.PublicId = result.PublicId;
-            photo.Url = result.SecureUrl.AbsoluteUri;
-            return await DataContext.SaveChangesAsync() > 0 ? photo.Url : null;
+            return await UpdatePhoto(file, userId, null);
         }
 
-        public async Task<bool> DeleteUserPhoto(int userId)
+        public async Task DeleteUserPhoto(int userId)
         {
-            var photo = await DataContext.Photos.SingleOrDefaultAsync(p => p.UserId == userId);
-            await _photoService.DeleteImage(photo.PublicId);
-            photo.PublicId = null;
-            photo.Url = null;
-            return await DataContext.SaveChangesAsync() > 0;
+            await DeletePhoto(userId, null);
         }
     }
 }

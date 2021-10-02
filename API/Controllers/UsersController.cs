@@ -2,16 +2,11 @@
 using System.Threading.Tasks;
 using System.Web;
 using API.DTOs;
-using API.Entities;
 using API.Extensions;
 using API.Helpers;
 using API.Interfaces;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -19,30 +14,19 @@ namespace API.Controllers
     [Authorize]
     public class UsersController : BaseController
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly IMapper _mapper;
-        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _uow;
 
-        public UsersController(UserManager<AppUser> userManager, IMapper mapper, IUserRepository userRepository)
+        public UsersController(IUnitOfWork unitOfWork)
         {
-            _userManager = userManager;
-            _mapper = mapper;
-            _userRepository = userRepository;
+            _uow = unitOfWork;
         }
 
         [HttpGet("{username}")]
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
-            var user = await _userManager.Users
-                .Include(u => u.Address)
-                .Include(u => u.Photo)
-                .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
-                .FirstOrDefaultAsync(u => u.UserName == username.ToLower());
+            var user = await _uow.UserRepository.GetUser(username);
 
-            if (user == null)
-                return BadRequest("Failed to get user.");
-
-            return user;
+            return user == null ? BadRequest("Failed to get user.") : user;
         }
 
         [HttpGet]
@@ -50,7 +34,7 @@ namespace API.Controllers
         {
             userParams.BloodGroup = HttpUtility.UrlDecode(userParams.BloodGroup);
             userParams.CurrentUserName = HttpContext.User.GetUserName();
-            var users = await _userRepository.GetUsers(userParams);
+            var users = await _uow.UserRepository.GetUsers(userParams);
             Response.AddPaginationHeader(users.PageNumber, users.PageSize, users.TotalPages, users.TotalCount);
             return Ok(users);
         }
