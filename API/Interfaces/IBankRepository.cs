@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using API.DTOs;
+using API.Entities;
 using API.Helpers;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 
 namespace API.Interfaces
 {
@@ -11,21 +11,16 @@ namespace API.Interfaces
         Task<PagedList<BankDto>> GetBanks(BankParams userParams);
         Task<PagedList<BankModeratorDto>> GetBanksForModeration(BankParams bankParams, int userId);
         Task<BankModeratorDto> GetBankForModeration(int bankId, int userId);
-        Task<bool> UpdateBloodData(BloodGroupUpdateDto updateDto, int userId);
-        Task<bool> UpdateRoles(BankRoleUpdateDto updateDto, int userId = 0);
+        Task UpdateBloodData(BloodGroupUpdateDto updateDto, int userId);
         Task<bool> IsBankExist(int bankId);
         Task<bool> IsBankModerator(int bankId, int userId);
         Task<bool> IsBankAdmin(int bankId, int userId);
         Task<bool> IsAdmin(int userId);
         Task<PagedList<BankModeratorDto>> GetBanksForAdmin(BankParams bankParams);
         Task<BankModeratorDto> GetBankForAdmin(int bankId);
-        Task<bool> UpdateBank(BankModeratorDto bankDto);
-        Task<PagedList<AdminRoleDto>> GetAdminRoles(AdminRoleParams roleParams);
-        Task<AdminRoleDto> GetAdminRole(AdminRoleDto roleDto);
-        Task<IdentityResult> AddAdminRole(AdminRoleDto roleDto);
-        Task<IdentityResult> RemoveAdminRole(AdminRoleDto roleDto);
-        Task<int> RegisterBank(BankRegisterDto registerDto);
+        Task<Bank> UpdateBank(BankModeratorDto bankDto);
+        Bank RegisterBank(BankRegisterDto registerDto, int adminUserId);
         Task<string> UpdateBankPhoto(int bankId, IFormFile file);
-        Task<bool> DeleteBankPhoto(int bankId);
+        Task DeleteBankPhoto(int bankId);
     }
 }

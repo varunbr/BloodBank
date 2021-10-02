@@ -9,14 +9,17 @@ namespace API.Interfaces
 {
     public interface IUserRepository
     {
+        Task<int> GetUserIdByUserName(string userName);
+        Task<string> GetUserNameById(int id);
+        Task<bool> UserExist(int id);
+        Task<bool> UserExist(string userName);
+        Task<MemberDto> GetUser(string userName);
         Task<PagedList<MemberDto>> GetUsers(UserParams userParams);
         Task<IList<string>> GetUserNames(IEnumerable<string> userNames);
-        Task<int> GetUserIdByUserName(string userName);
         Task<bool> LogUserActive(int id);
-        Task<string> GetUserNameById(int id);
         Task<UserProfileDto> GetProfile(int id);
-        Task<UserProfileDto> UpdateProfile(UserProfileDto profileDto);
-        Task<string> UpdateUserPhoto(int userId, IFormFile file);
-        Task<bool> DeleteUserPhoto(int userId);
+        Task<AppUser> UpdateProfile(UserProfileDto profileDto);
+        Task<string> UpdateUserPhoto(IFormFile file, int userId);
+        Task DeleteUserPhoto(int userId);
     }
 }
