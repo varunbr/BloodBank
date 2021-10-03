@@ -1,0 +1,818 @@
+{
+	"info": {
+		"_postman_id": "4949c4dc-35c4-416d-a43d-abe3684811c4",
+		"name": "Blood Bank",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Name\": \"Ola Walters\",\r\n    \"UserName\": \"ola\",\r\n    \"Gender\": \"Female\",\r\n    \"DateOfBirth\": \"1980-10-29\",\r\n    \"BloodGroup\": \"B+\",\r\n    \"Area\": \"Bijou Avenue\",\r\n    \"City\": \"Marysville\",\r\n    \"State\": \"Virgin Islands\",\r\n    \"Country\": \"Albania\",\r\n    \"PostalCode\": \"26345\",\r\n    \"Email\": \"danny@zmail.com\",\r\n    \"PhoneNumber\": \"+919763457681\",\r\n    \"Password\":\"User@2021\"\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/account/register",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"account",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login as Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const user = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Has properties\", function () {\r",
+							"    pm.expect(user).to.have.property('username');\r",
+							"    pm.expect(user).to.have.property('token');\r",
+							"});\r",
+							"\r",
+							"if (pm.test(\"Has properties\")) {\r",
+							"    pm.globals.set('token', user.token);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\":\"Admin\",\r\n    \"password\":\"User@2021\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/account/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"account",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Updated token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/account/token-update",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"account",
+						"token-update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/users/admin",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/users?Gender=male&Address=563114&BloodGroup=Op",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "Gender",
+							"value": "male"
+						},
+						{
+							"key": "Address",
+							"value": "563114"
+						},
+						{
+							"key": "BloodGroup",
+							"value": "Op"
+						},
+						{
+							"key": "MinAge",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "MaxAge",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "OrderBy",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "PageNumber",
+							"value": "10",
+							"disabled": true
+						},
+						{
+							"key": "PageSize",
+							"value": "1",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Banks",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/banks?PageNumber=1&PageSize=10",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"banks"
+					],
+					"query": [
+						{
+							"key": "Name",
+							"value": "manipal",
+							"disabled": true
+						},
+						{
+							"key": "Address",
+							"value": "563114",
+							"disabled": true
+						},
+						{
+							"key": "BloodGroup",
+							"value": "Op",
+							"disabled": true
+						},
+						{
+							"key": "OrderBy",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "PageNumber",
+							"value": "1"
+						},
+						{
+							"key": "PageSize",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Banks for Moderation",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/moderate?PageNumber=1&PageSize=10",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"moderate"
+					],
+					"query": [
+						{
+							"key": "Name",
+							"value": "manipal",
+							"disabled": true
+						},
+						{
+							"key": "Address",
+							"value": "563114",
+							"disabled": true
+						},
+						{
+							"key": "BloodGroup",
+							"value": "Op",
+							"disabled": true
+						},
+						{
+							"key": "OrderBy",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "PageNumber",
+							"value": "1"
+						},
+						{
+							"key": "PageSize",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Bank for Moderation",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/moderate/20",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"moderate",
+						"20"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update blood data",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"bankId\":2,\r\n    \"groups\":[\r\n        {\r\n            \"group\":\"O+\",\r\n            \"value\":4\r\n        },\r\n        {\r\n            \"group\":\"O-\",\r\n            \"value\":5\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/moderate/blood-data",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"moderate",
+						"blood-data"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Bank Role by Bank Admin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"bob\",\r\n    \"role\": \"BankAdmin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/moderate/bank-role/40",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"moderate",
+						"bank-role",
+						"40"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Bank Role by Bank Admin",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"bob\",\r\n    \"role\": \"BankAdmin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/moderate/bank-role/40",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"moderate",
+						"bank-role",
+						"40"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Banks for Admin",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/admin?PageNumber=1&PageSize=10",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin"
+					],
+					"query": [
+						{
+							"key": "Name",
+							"value": "manipal",
+							"disabled": true
+						},
+						{
+							"key": "Address",
+							"value": "563114",
+							"disabled": true
+						},
+						{
+							"key": "BloodGroup",
+							"value": "Op",
+							"disabled": true
+						},
+						{
+							"key": "OrderBy",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "PageNumber",
+							"value": "1"
+						},
+						{
+							"key": "PageSize",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Bank by Admin,Moderator",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Shaaaaam Hospital\",\r\n    \"area\": \"Indiranagar\",\r\n    \"city\": \"Bangarpet\",\r\n    \"state\": \"Maharashtra\",\r\n    \"country\": \"Japan\",\r\n    \"postalCode\": \"560020\",\r\n    \"phoneNumber\": \"+919700852009\",\r\n    \"email\": \"support@snr.com\",\r\n    \"website\": \"https://www.snr.com\",\r\n    \"bankAdmin\":\"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/admin/register-bank",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						"register-bank"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Bank by Admin,Moderator",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 22,\r\n    \"name\": \"MaxCure Hospital\",\r\n    \"area\": \"Indiranagar\",\r\n    \"city\": \"Mumbai\",\r\n    \"state\": \"Maharashtra\",\r\n    \"country\": \"Japan\",\r\n    \"postalCode\": \"560020\",\r\n    \"phoneNumber\": \"+919700852009\",\r\n    \"email\": \"support@maxcure.com\",\r\n    \"website\": \"https://www.maxcure.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/admin/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Bank Role by Admin, Moderator",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"bob\",\r\n    \"role\": \"BankAdmin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/admin/bank-role/40",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						"bank-role",
+						"40"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Bank Role by Admin, Moderator",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"bob\",\r\n    \"role\": \"BankAdmin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/admin/bank-role/40",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						"bank-role",
+						"40"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Roles for Super Admin",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/admin/roles?Role=Moderator&PageNumber=1&PageSize=10",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						"roles"
+					],
+					"query": [
+						{
+							"key": "UserId",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "UserName",
+							"value": "admin",
+							"disabled": true
+						},
+						{
+							"key": "Name",
+							"value": "admin",
+							"disabled": true
+						},
+						{
+							"key": "Role",
+							"value": "Moderator"
+						},
+						{
+							"key": "PageNumber",
+							"value": "1"
+						},
+						{
+							"key": "PageSize",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Role by Super Admin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"bob\",\r\n    \"role\": \"Admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/admin/roles",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						"roles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Role by Super Admin",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"bob\",\r\n    \"role\": \"Admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/admin/roles",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						"roles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Roles for About",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/admin/roles?Role=Moderator&PageNumber=1&PageSize=10",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"admin",
+						"roles"
+					],
+					"query": [
+						{
+							"key": "UserId",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "UserName",
+							"value": "admin",
+							"disabled": true
+						},
+						{
+							"key": "Name",
+							"value": "admin",
+							"disabled": true
+						},
+						{
+							"key": "Role",
+							"value": "Moderator"
+						},
+						{
+							"key": "PageNumber",
+							"value": "1"
+						},
+						{
+							"key": "PageSize",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "https://localhost:5001/api"
+		}
+	]
+}

@@ -15,5 +15,6 @@ namespace API.Interfaces
         Task<RoleDto> GetAdminRole(RoleDto roleDto);
         Task<IdentityResult> AddAdminRole(RoleDto roleDto);
         Task<IdentityResult> RemoveAdminRole(RoleDto roleDto);
+        Task<List<RoleDto>> GetRolesForAbout();
     }
 }

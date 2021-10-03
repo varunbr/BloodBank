@@ -4,6 +4,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { Role } from '../_modals/admin';
 import { UserProfile } from '../_modals/profile';
 import { User } from '../_modals/user';
 
@@ -115,5 +116,9 @@ export class AccountService {
           return response;
         })
       );
+  }
+
+  getRolesForAbout() {
+    return this.http.get<Role[]>(environment.apiUrl + 'account/about');
   }
 }
