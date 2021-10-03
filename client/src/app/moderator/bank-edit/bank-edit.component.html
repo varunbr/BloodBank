@@ -66,67 +66,103 @@
                 <div class="card-header text-primary text-center"><i class="fa fa-user-plus"></i> Role Administration
                 </div>
                 <div class="card-body">
-                    <form #rolesForm="ngForm"
-                        (ngSubmit)="!rolesForm.pristine && rolesForm.valid && updateRoles(rolesForm)">
-                        <div class="row text-primary">
-                            <div class="col-1 text-right">
-                                <strong>#</strong>
-                            </div>
-                            <div class="col-5">
-                                <strong>Username</strong>
-                            </div>
-                            <div class="col-5">
-                                <strong>Role</strong>
-                            </div>
-                            <div class="col-1">
-                            </div>
-                        </div>
-                        <hr class="text-primary" style="height: 4px;">
-                        <div *ngFor="let user of bank.moderators; let i = index">
-                            <div class="row text-primary">
-                                <div class="col-1 text-right">
-                                    <strong>{{i + 1}}</strong>
-                                </div>
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <input [class.is-valid]="name.valid && name.dirty"
-                                            [class.is-invalid]="name.invalid && name.dirty" type="text" required
-                                            class="form-control form-control-sm" [(ngModel)]="user.userName"
-                                            appUserNameValidator="true" name="{{'userName' + i}}" id="{{'userName' + i}}"
-                                            value="{{user.userName}}" #name="ngModel" placeholder="Enter Username">
-                                        <div class="valid-feedback" *ngIf="rolesForm.controls['userName'+i]?.valid">
-                                            Username available.</div>
-                                        <div class="invalid-feedback"
-                                            *ngIf="rolesForm.controls['userName'+i]?.errors?.alreadyExist === false">
-                                            Username not available.</div>
-                                    </div>
-                                </div>
-                                <div class="col-5">
-                                    <select id="role"
-                                        class="form-control form-control-sm form-select form-select-sm"
-                                        [(ngModel)]="user.type" name="{{'role' + i}}">
-                                        <option value="BankModerator">Bank Moderator</option>
-                                        <option value="BankAdmin">Bank Admin</option>
-                                    </select>
-                                </div>
-                                <div class="col-2">
-                                    <button
-                                        class="btn btn-sm btn-danger" (click)="removeRole(rolesForm, i)"><i
-                                            class="fa fa-trash"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                        <hr class="text-primary" style="height: 2px;">
+                    <div class="mt-2">
+                        <table class="table table-hover">
+                            <thead class="text-primary">
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Username</th>
+                                    <th scope="col">Role</th>
+                                    <th scope="col">Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let user of bank.moderators; let i = index">
+                                    <td class="d-flex justify-content-center">
+                                        <img src="{{user.photoUrl || './assets/images/profile.png'}}"
+                                            class="img-fluid rounded-circle mb-2 mb-md-0" style="max-height: 50px;" />
+                                    </td>
+                                    <td class="align-middle">
+                                        {{user.name}}
+                                    </td>
+                                    <td class="align-middle">
+                                        {{user.userName}}
+                                    </td>
+                                    <td class="align-middle">
+                                        {{user.role}}
+                                    </td>
+                                    <td class="align-middle">
+                                        <button class="btn btn-sm btn-danger ml-2" (click)="removeRole(user)"><i
+                                                class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                         <div class="row">
-                            <div class="col d-flex justify-content-end flex-row">
-                                <button type="button" class="btn btn-info mr-4" (click)="addRole(rolesForm)">
+                            <div class="col d-flex justify-content-center flex-row">
+                                <button type="button" class="btn btn-info mr-4" (click)="openModal(modal)">
                                     <i class="fa fa-user-plus"></i> Add User</button>
-                                <button type="submit" [disabled]="rolesForm.pristine || !rolesForm.valid"
-                                    class="btn btn-primary mr-4"><i class="fa fa-check"></i> Update</button>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
+                <ng-template #modal>
+                    <div class="float-right">
+                        <button type="button" class="close mr-4 mt-3" data-dismiss="modal" aria-label="Close"
+                            (click)="modalRef?.hide()">
+                            <span class="text-danger" aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card border-primary mb-3" style="border-radius:20px;">
+                            <div class="card-body">
+                                <form #rolesForm="ngForm" (ngSubmit)="rolesForm.valid && addRole()">
+                                    <div class="row">
+                                        <div class="col-sm-3 text-primary">
+                                            Username
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <div class="form-group">
+                                                <input [class.is-valid]="name.valid  && name.dirty"
+                                                    [class.is-invalid]="name.invalid && name.dirty" type="text" required
+                                                    class="form-control form-control-sm"
+                                                    [(ngModel)]="bankModerator.userName" appUserNameValidator="true"
+                                                    name="userName" id="userName" value="{{bankModerator.userName}}"
+                                                    #name="ngModel" placeholder="Enter Username">
+                                                <div class="valid-feedback"
+                                                    *ngIf="rolesForm.controls['userName']?.valid">
+                                                    Username available.</div>
+                                                <div class="invalid-feedback"
+                                                    *ngIf="rolesForm.controls['userName']?.errors?.alreadyExist === false">
+                                                    Username not available.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-sm-3 text-primary">
+                                            Role
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <select id="role"
+                                                class="form-control form-control-sm form-select form-select-sm"
+                                                [(ngModel)]="bankModerator.role" name="role">
+                                                <option value="BankModerator">BankModerator</option>
+                                                <option value="BankAdmin">BankAdmin</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-12 mt-4 mt-md-0 d-flex justify-content-center">
+                                            <button [disabled]="!rolesForm.valid" class="btn btn-sm btn-info"
+                                                type="submit"><i class="fa fa-check"></i> Add Role</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
             </div>
         </div>
     </div>

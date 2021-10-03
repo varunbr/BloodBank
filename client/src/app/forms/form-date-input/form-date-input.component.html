@@ -1,13 +1,13 @@
 <div class="row form-group">
     <div class="col-sm-4 col-xl-3">
-        <label for="{{label}}" class="text-primary mt-2">
+        <label for="{{label}}" class="text-primary mt-2" for="{{label}}">
             <ng-content></ng-content> {{label}}
         </label>
     </div>
     <div class="col-sm-8 col-xl-9 text-secondary">
         <input [class.is-invalid]="ngControl.invalid && ngControl.touched" bsDatepicker [maxDate]="maxDate"
             class="form-control" [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',containerClass:'theme-red' }"
-            [formControl]="ngControl.control" placeholder="{{label}}">
+            [formControl]="ngControl.control" placeholder="{{label}}" id="{{label}}">
         <div class="invalid-feedback" *ngIf="ngControl.control.errors?.required">Please enter a {{label}}.</div>
         <div class="invalid-feedback" *ngIf="ngControl.control.errors?.bsDate?.invalid">Please enter valid {{label}}.
         </div>

@@ -5,4 +5,5 @@ export class BankParams extends PageParams {
   address = '';
   orderBy = '';
   bankName = '';
+  id = 0;
 }

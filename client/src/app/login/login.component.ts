@@ -24,9 +24,6 @@ export class LoginComponent implements OnInit {
     this.accountService.login(this.modal).subscribe(
       () => {
         this.router.navigateByUrl('/');
-      },
-      (error) => {
-        console.log(error);
       }
     );
   }

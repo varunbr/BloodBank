@@ -14,5 +14,6 @@
         public string BloodGroup { get; set; }
         public string Address { get; set; }
         public string OrderBy { get; set; }
+        public int Id { get; set; }
     }
 }

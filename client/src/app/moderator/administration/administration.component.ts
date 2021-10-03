@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
-import { AdminRole, AdminRoleParams } from 'src/app/_modals/admin';
+import { Role, RoleParams } from 'src/app/_modals/admin';
 import { User } from 'src/app/_modals/user';
 import { AccountService } from 'src/app/_services/account.service';
 import { AdministratorService } from 'src/app/_services/administrator.service';
@@ -14,11 +14,11 @@ import { BaseListComponent } from 'src/app/_services/base-list.component';
   styleUrls: ['./administration.component.css'],
 })
 export class AdministrationComponent
-  extends BaseListComponent<AdminRole, AdminRoleParams>
+  extends BaseListComponent<Role, RoleParams>
   implements OnInit
 {
   currentUser: User;
-  adminRole: AdminRole;
+  adminRole: Role;
   modalRef?: BsModalRef;
   constructor(
     private administrator: AdministratorService,
@@ -36,7 +36,7 @@ export class AdministrationComponent
       .subscribe((user) => (this.currentUser = user));
   }
 
-  removeRole(adminRole: AdminRole, index: number) {
+  removeRole(adminRole: Role, index: number) {
     this.administrator.removeRole(adminRole).subscribe((response) => {
       this.modals.splice(index, 1);
       this.toastr.success('Role removed.');
@@ -44,7 +44,7 @@ export class AdministrationComponent
   }
 
   openModal(template: TemplateRef<any>) {
-    this.adminRole = new AdminRole();
+    this.adminRole = new Role('Moderator');
     this.modalRef = this.bsmodalService.show(template);
   }
 

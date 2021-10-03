@@ -7,7 +7,7 @@ namespace API.Extensions
     {
         public static void UpdateRole(this BankModeratorDto bank, int userId)
         {
-            bank.Role = bank.Moderators.FirstOrDefault(i => i.UserId == userId)?.Type;
+            bank.Role = bank.Moderators.FirstOrDefault(i => i.UserId == userId)?.Role;
             if (bank.Role != "BankAdmin") bank.Moderators = null;
         }
     }

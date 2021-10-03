@@ -18,7 +18,7 @@ namespace API.Services
                     await userRepository.LogUserActive(userId);
             }
 
-            var result = await next();
+            await next();
         }
     }
 }

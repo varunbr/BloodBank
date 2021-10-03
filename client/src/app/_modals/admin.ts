@@ -1,14 +1,19 @@
 import { BaseModal } from './modal';
 import { PageParams } from './pageParams';
 
-export class AdminRole extends BaseModal {
+export class Role extends BaseModal {
+  userId = 0;
   userName = '';
   photoUrl = '';
   name = '';
-  role = 'Moderator';
+  role = '';
+  constructor(role: string) {
+    super();
+    this.role = role;
+  }
 }
 
-export class AdminRoleParams extends PageParams {
+export class RoleParams extends PageParams {
   role = '';
   name = '';
   userName = '';

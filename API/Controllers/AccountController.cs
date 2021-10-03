@@ -47,6 +47,7 @@ namespace API.Controllers
             user.UserName = registerDto.UserName.ToLower();
             user.Photo = new Photo();
             user.LastActive = DateTime.UtcNow;
+            user.Available = true;
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
             if (!result.Succeeded) return BadRequest(result.Errors);

@@ -24,6 +24,7 @@ export class AdminService extends BasePageService<Bank, BankParams> {
   addHttpParams(httpParams: HttpParams): HttpParams {
     httpParams = httpParams.append('address', this.params.address);
     httpParams = httpParams.append('name', this.params.bankName);
+    httpParams = httpParams.append('id', this.params.id);
     return httpParams;
   }
 
@@ -40,13 +41,29 @@ export class AdminService extends BasePageService<Bank, BankParams> {
     );
   }
 
-  updateBankRoles(body) {
-    return this.http.put<Bank>(this.baseUrl + '/bank-role', body).pipe(
-      map((response) => {
-        this.cacheModal(response);
-        return response;
+  addBankRole(body, bankId: number) {
+    return this.http
+      .post<Bank>(this.baseUrl + '/bank-role/' + bankId, body)
+      .pipe(
+        map((response) => {
+          this.cacheModal(response);
+          return response;
+        })
+      );
+  }
+
+  removeBankRole(body, bankId: number) {
+    return this.http
+      .delete<Bank>(this.baseUrl + '/bank-role/' + bankId, {
+        body: body,
+        responseType: 'json',
       })
-    );
+      .pipe(
+        map((response) => {
+          this.cacheModal(response);
+          return response;
+        })
+      );
   }
 
   registerBank(body) {
