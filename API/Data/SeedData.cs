@@ -91,7 +91,7 @@ namespace API.Data
             }
 
             await userManager.AddToRoleAsync(pat, "BankModerator");
-            await userManager.AddToRoleAsync(pat, "BankModerator");
+            await userManager.AddToRoleAsync(tia, "BankModerator");
         }
     }
 }
