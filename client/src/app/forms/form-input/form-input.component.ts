@@ -4,11 +4,12 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 @Component({
   selector: 'app-form-input',
   templateUrl: './form-input.component.html',
-  styleUrls: ['./form-input.component.css']
+  styleUrls: ['./form-input.component.css'],
 })
 export class FormInputComponent implements ControlValueAccessor {
   @Input() label: string;
   @Input() type: string = 'text';
+  @Input() userNameValidation: boolean = false;
 
   constructor(@Self() public ngControl: NgControl) {
     this.ngControl.valueAccessor = this;

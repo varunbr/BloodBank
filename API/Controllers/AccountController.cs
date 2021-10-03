@@ -74,7 +74,7 @@ namespace API.Controllers
                 .Include(u => u.Photo)
                 .FirstOrDefaultAsync(u => u.UserName == loginDto.UserName.ToLower());
 
-            if (user == null) return Unauthorized("Invalid user");
+            if (user == null) return BadRequest("Invalid user");
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
             if (!result.Succeeded) return Unauthorized();
@@ -155,6 +155,12 @@ namespace API.Controllers
             return !string.IsNullOrEmpty(photoUrl) && await _uow.SaveChanges()
                 ? Ok(new { PhotoUrl = photoUrl })
                 : BadRequest("Failed to update photo.");
+        }
+
+        [HttpGet("about")]
+        public async Task<ActionResult> GetRolesForAbout()
+        {
+            return Ok(await _uow.RoleRepository.GetRolesForAbout());
         }
     }
 }

@@ -6,11 +6,13 @@
     </div>
     <div class="col-sm-8 col-xl-9 text-secondary">
         <input type="{{type}}" id="{{label}}" [class.is-invalid]="ngControl.invalid && ngControl.touched"
-            [class.is-valid]="ngControl.valid && label === 'UserName' && ngControl.dirty" placeholder="{{label}}"
+            [class.is-valid]="ngControl.valid && userNameValidation && ngControl.dirty" placeholder="{{label}}"
             class="form-control" [formControl]="ngControl.control">
         <div class="invalid-feedback" *ngIf="ngControl.control.errors?.required">Please enter a {{label}}.</div>
         <div class="invalid-feedback" *ngIf="ngControl.control.errors?.email">Please enter valid {{label}}.</div>
         <div class="invalid-feedback" *ngIf="ngControl.control.errors?.alreadyExist === true">Username already exist.
+        </div>
+        <div class="invalid-feedback" *ngIf="ngControl.control.errors?.alreadyExist === false">Username doesn't exist.
         </div>
         <div class="valid-feedback" *ngIf="ngControl.valid">{{label}} available.</div>
         <div class="invalid-feedback" *ngIf="ngControl.control.errors?.minlength">

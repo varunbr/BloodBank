@@ -31,7 +31,7 @@
                 <app-form-input class="col-md-6" [label]="'Pincode'" formControlName="postalCode">
                     <i class="fa fa-map-pin"></i>
                 </app-form-input>
-                <app-form-input class="col-md-6" [label]="'Bank Admin'" formControlName="bankAdmin">
+                <app-form-input class="col-md-6" [label]="'Bank Admin'"  [userNameValidation]="true" formControlName="bankAdmin">
                     <i class="fa fa-user-plus"></i>
                 </app-form-input>
                 <div class="text-center mt-2">

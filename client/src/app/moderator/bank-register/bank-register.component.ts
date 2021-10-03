@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
+import { validateUserExistence } from 'src/app/directives/user-name-validator.directive';
+import { AccountService } from 'src/app/_services/account.service';
 import { AdminService } from 'src/app/_services/admin.service';
 
 @Component({
@@ -16,6 +18,7 @@ export class BankRegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private adminService: AdminService,
+    private accountService:AccountService,
     private toastr: ToastrService,
     private router: Router
   ) {}
@@ -35,7 +38,7 @@ export class BankRegisterComponent implements OnInit {
       state: ['', Validators.required],
       country: ['', Validators.required],
       postalCode: ['', Validators.required],
-      bankAdmin: ['', Validators.required],
+      bankAdmin: ['', Validators.required,validateUserExistence(this.accountService, true)],
     });
   }
 

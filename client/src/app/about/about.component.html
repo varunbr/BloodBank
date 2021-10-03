@@ -1,2 +1,183 @@
-<p>about works!</p>
-<!-- https://icon-icons.com/ -->
+<div class="row d-flex justify-content-center">
+    <div class="col-lg-6 col-md-8 my-2">
+        <div class="card border-primary my-4" style="border-radius:20px;">
+            <div class="card-body">
+                <div class="d-flex flex-column align-items-center text-center">
+                    <img src="./assets/images/pp.jpg" alt="" class="p-1 bg-primary rounded-circle" width="250px">
+                    <div class="mt-3">
+                        <h4 class="text-primary">Varun Kumar BR</h4>
+                        <p class="text-muted font-size-sm">Full Stack Developer</p>
+                    </div>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                        <h6 class="mb-0"><i class="fa fa-envelope-open"></i> Email</h6>
+                        <span class="text-secondary">varunbr6@gmail.com</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                        <h6 class="mb-0"><i class="fa fa-phone"></i> Phone</h6>
+                        <span class="text-secondary">9844288854</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                        <h6 class="mb-0"><i class="fa fa-github"></i> Sorce Code</h6>
+                        <a class="text-secondary" href="https://github.com/varunbr/BloodBank">BloodBank</a>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                        <h6 class="mb-0"><i class="fa fa-linkedin"></i> LinkedIn</h6>
+                        <a class="text-secondary" href="https://www.linkedin.com/in/brvarun/">brvarun</a>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                        <h6 class="mb-0"><i class="fa fa-map-marker"></i> Location</h6>
+                        <span class="text-secondary">Bengaluru</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row d-flex justify-content-center">
+    <div class="col-lg-10">
+        <div class="card border-primary my-3" style="border-radius:20px;">
+            <div class="card-header text-primary text-center"><i class="fa fa-user"></i> View as different User?
+            </div>
+            <div class="card-body">
+                <div class="mt-2">
+                    <table class="table table-hover">
+                        <thead class="text-primary">
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Role</th>
+                                <th scope="col">Password</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let user of roles; let i = index">
+                                <td class="d-flex justify-content-center">
+                                    <img src="{{user.photoUrl || './assets/images/profile.png'}}"
+                                        class="img-fluid rounded-circle mb-2 mb-md-0" style="max-height: 50px;" />
+                                </td>
+                                <td class="align-middle">
+                                    {{user.name}}
+                                </td>
+                                <td class="align-middle">
+                                    {{user.userName}}
+                                </td>
+                                <td class="align-middle">
+                                    {{user.role}}
+                                </td>
+                                <td class="align-middle">
+                                    {{user.userName === 'admin' ? '???' : 'User@2021'}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row d-flex justify-content-center">
+    <div class="col-lg-10">
+        <div class="card border-primary my-3" style="border-radius:20px;">
+            <div class="card-header text-center text-primary">About The Project</div>
+            <div class="card-body">
+                <p class="text-primary text-center">This Web App is about finding required blood group either by
+                    searching Donors or
+                    Blood Bank.</p>
+                <hr>
+                <h5 class="card-title text-primary">Roles</h5>
+                <p class="text-muted">The App has many user roles, based on the role users in, the required tabs will be
+                    added or removed.</p>
+                <hr>
+                <h6 class="card-title">1. Member</h6>
+                <p class="text-muted">All the registered users will become part of this role. Member can search for
+                    Donors and Blood Banks. Members can edit and update their profile also they can configure whether
+                    they are available for blood donation.</p>
+                <hr>
+                <h6 class="card-title">2. Bank Moderator</h6>
+                <p class="text-muted">Bank Moderator can update blood availability for the banks. A single user can be a
+                    Bank Moderator of many banks and a single bank can have many Bank Moderators.</p>
+                <hr>
+                <h6 class="card-title">3. Bank Admin</h6>
+                <p class="text-muted">Bank Admin has all the access of what Bank Moderator has, and also they can add or
+                    remove Bank Moderators and Bank Admins, change bank photo. A single user can be Bank Admin of many
+                    banks and the single bank can have many Bank Admin.</p>
+                <hr>
+                <h6 class="card-title">4. Moderator</h6>
+                <p class="text-muted">Moderators can create or update profiles of all Banks and also they can update
+                    user roles for Banks.</p>
+                <hr>
+                <h6 class="card-title">5. Admin</h6>
+                <p class="text-muted">Admin has highest access to site, they can add or remove roles of Admin or
+                    Moderator.
+                </p>
+                <hr>
+                <br>
+                <h5 class="card-title text-primary">Built With</h5>
+                <p class="text-center">
+                    <a href="https://dotnet.microsoft.com/apps/aspnet/">
+                        <img src="./assets/images/dot-net-core.png" alt="ASP.NET" width="80" height="80">
+                    </a>
+                    <a href="https://angular.io/">
+                        <img src="./assets/images/angular.png" alt="Angular" width="80" height="80">
+                    </a>
+                    <a href="https://valor-software.com/ngx-bootstrap/#/">
+                        <img src="./assets/images/bootstrap.png" alt="ASP.NET" width="auto" height="80">
+                    </a>
+                </p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Framework</th>
+                            <th scope="col">Version</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>ASP.NET</td>
+                            <td>5.0</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Entity Framework</td>
+                            <td>5.0</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>Angular</td>
+                            <td>12.0</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">4</th>
+                            <td>Ngx Bootstrap</td>
+                            <td>7.0</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <h5 class="card-title text-primary">Acknowledgements</h5>
+                <ul>
+                    <li><a class="text-muted" href="https://cloudinary.com">Cloudinary - Image Repository</a></li>
+                    <li><a class="text-muted" href="https://www.heroku.com/">Heroku - Cloud Application Platform</a>
+                    </li>
+                    <li><a class="text-muted" href="https://github.com/AutoMapper/AutoMapper">AutoMapper - Dependency
+                            Injection</a></li>
+                    <li><a class="text-muted" href="https://bootswatch.com">Bootswatch - Themes for Bootstrap</a></li>
+                    <li><a class="text-muted" href="https://fontawesome.com">Font Awesome - Icons</a></li>
+                    <li><a class="text-muted" href="https://www.npmjs.com/package/ngx-spinner">ngx-spinner - Loading
+                            spinner</a></li>
+                    <li><a class="text-muted" href="https://www.npmjs.com/package/ngx-toastr">ngx-toastr - Toastr
+                            Notification</a></li>
+                    <li><a class="text-muted" href="https://www.npmjs.com/package/ngx-timeago">ngx-timeago</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+

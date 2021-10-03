@@ -130,7 +130,7 @@ Generate Bank
     Moderators:[
       {
         User:{
-      UserName:'{{random("admin","bob","john","lynn","dora")}}'
+      UserName:'{{random("bob","lynn","dora")}}'
     }
       }],
     Website:function(){ return "https://www." +this.Name.split(" ")[0].toLowerCase() + ".com"; },

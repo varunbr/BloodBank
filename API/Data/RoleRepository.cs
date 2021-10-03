@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
@@ -59,7 +60,7 @@ namespace API.Data
             {
                 await _userManager.AddToRoleAsync(user, role);
             }
-            else if(!currentRoles.Contains(role))
+            else if (!currentRoles.Contains(role))
             {
                 await _userManager.RemoveFromRoleAsync(user, role);
             }
@@ -102,6 +103,29 @@ namespace API.Data
                 return IdentityResult.Failed(new IdentityError { Description = "User doesn't exist." });
 
             return await _userManager.RemoveFromRoleAsync(user, roleDto.Role);
+        }
+
+        public async Task<List<RoleDto>> GetRolesForAbout()
+        {
+            var list = new List<RoleDto>();
+            var roles = new[] { "Admin", "Moderator", "BankAdmin", "BankModerator" };
+
+            foreach (var role in roles)
+            {
+                var roleDto = await GetUserInRole(role);
+                if(roleDto!=null)
+                    list.Add(roleDto);
+            }
+
+            return list;
+        }
+
+        private async Task<RoleDto> GetUserInRole(string role)
+        {
+            return await DataContext.UserRoles
+                .Where(r => r.Role.Name == role)
+                .ProjectTo<RoleDto>(Mapper.ConfigurationProvider).AsNoTracking()
+                .FirstOrDefaultAsync();
         }
     }
 }
