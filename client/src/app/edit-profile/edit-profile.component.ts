@@ -34,6 +34,7 @@ export class EditProfileComponent implements OnInit {
   }
 
   initilizeForm() {
+    console.log(this.user);
     this.profileUpdateForm = this.fb.group({
       id: [this.user.id],
       name: [this.user.name, Validators.required],
@@ -52,6 +53,7 @@ export class EditProfileComponent implements OnInit {
       country: [this.user.country, Validators.required],
       postalCode: [this.user.postalCode, Validators.required],
       gender: [this.user.gender, Validators.required],
+      available: [this.user.available],
     });
   }
 

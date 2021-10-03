@@ -47,7 +47,7 @@ namespace API.Controllers
             var bank = _uow.BankRepository.RegisterBank(registerDto, userId);
             if (!await _uow.SaveChanges())
                 return BadRequest("Failed to register bank.");
-            await _uow.RoleRepository.ResetBankUserRole(new[] { userId });
+            await _uow.RoleRepository.UpdateUserRole(userId, "BankAdmin");
             return Ok(bank.Id);
         }
 
@@ -62,26 +62,41 @@ namespace API.Controllers
             return await GetBank(bank.Id);
         }
 
-        [HttpPut("bank-role")]
-        public async Task<ActionResult> UpdateBankRoles(BankRoleUpdateDto updateDto)
+        [HttpPost("bank-role/{bankId}")]
+        public async Task<ActionResult> AddBankRole(RoleDto roleDto, int bankId)
         {
-            if (!Validator.ValidateBankRole(updateDto))
-                return BadRequest("Invalid Role Type.");
+            var roleUserId = await _uow.UserRepository.GetUserIdByUserName(roleDto.UserName);
 
-            if (updateDto.Moderators.Count != updateDto.Moderators.GroupBy(u => u.UserName, StringComparer.OrdinalIgnoreCase).Count())
-                return BadRequest("Duplicate users not allowed.");
+            if (!Util.GetBankRoles().Contains(roleDto.Role))
+                return BadRequest("Invalid Role.");
 
-            var moderators = updateDto.Moderators.Select(m => m.UserName).ToList();
-            var existingUsers = await _uow.UserRepository.GetUserNames(moderators);
-            if (moderators.Count != existingUsers.Count)
-            {
-                var nonExistingUsers = moderators.Except(existingUsers, StringComparer.OrdinalIgnoreCase);
-                return BadRequest($"The user(s) {string.Join(", ", nonExistingUsers.ToArray())} are not available.");
-            }
+            if (await _uow.BankRepository.IsBankModerator(bankId, roleUserId))
+                return BadRequest("User already in role.");
 
-            return await _uow.RoleRepository.UpdateBankRoles(updateDto) ?
-                Ok(await _uow.BankRepository.GetBankForAdmin(updateDto.BankId)) :
-                BadRequest("Failed to update roles");
+            await _uow.RoleRepository.AddBankRole(roleDto.Role, bankId, roleUserId);
+
+            if (!await _uow.SaveChanges())
+                return BadRequest("Failed to add role.");
+
+            await _uow.RoleRepository.UpdateUserRole(roleUserId, roleDto.Role);
+            return Ok(await _uow.BankRepository.GetBankForAdmin(bankId));
+        }
+
+        [HttpDelete("bank-role/{bankId}")]
+        public async Task<ActionResult> RemoveBankRole(RoleDto roleDto, int bankId)
+        {
+            var roleUserId = await _uow.UserRepository.GetUserIdByUserName(roleDto.UserName);
+
+            if (!Util.GetBankRoles().Contains(roleDto.Role))
+                return BadRequest("Invalid Role.");
+
+            await _uow.RoleRepository.RemoveBankRole(roleDto.Role, bankId, roleUserId);
+
+            if (!await _uow.SaveChanges())
+                return BadRequest("Failed to add role.");
+
+            await _uow.RoleRepository.UpdateUserRole(roleUserId, roleDto.Role, false);
+            return Ok(await _uow.BankRepository.GetBankForAdmin(bankId));
         }
 
         [HttpGet("roles"), Authorize(Roles = "Admin")]
@@ -96,7 +111,7 @@ namespace API.Controllers
         }
 
         [HttpPost("roles"), Authorize(Roles = "Admin")]
-        public async Task<ActionResult> AddAdminRole(AdminRoleDto roleDto)
+        public async Task<ActionResult> AddAdminRole(RoleDto roleDto)
         {
             if (!await _uow.BankRepository.IsAdmin(HttpContext.User.GetUserId()))
                 return BadRequest("You are not admin");
@@ -111,7 +126,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("roles"), Authorize(Roles = "Admin")]
-        public async Task<ActionResult> RemoveAdminRole(AdminRoleDto roleDto)
+        public async Task<ActionResult> RemoveAdminRole(RoleDto roleDto)
         {
             if (!await _uow.BankRepository.IsAdmin(HttpContext.User.GetUserId()))
                 return BadRequest("You are not admin");

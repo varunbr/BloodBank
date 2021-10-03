@@ -50,6 +50,12 @@ namespace API.Extensions
 
         public static IQueryable<Bank> BuildQuery(this IQueryable<Bank> query, BankParams bankParams)
         {
+            if (bankParams.Id > 0)
+            {
+                query = query.Where(b => b.Id == bankParams.Id);
+                return query;
+            }
+
             if (!string.IsNullOrEmpty(bankParams.Name))
             {
                 query = query.Where(b => b.Name.Contains(bankParams.Name));

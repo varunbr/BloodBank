@@ -18,6 +18,7 @@ namespace API.DTOs
         [Required] public string State { get; set; }
         [Required] public string Country { get; set; }
         [Required] public string PostalCode { get; set; }
+        public bool Available { get; set; }
         public string PhotoUrl { get; set; }
     }
 }

@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
+import { Role } from 'src/app/_modals/admin';
 import { Bank } from 'src/app/_modals/bank';
 import { AdminService } from 'src/app/_services/admin.service';
 
@@ -13,11 +15,14 @@ import { AdminService } from 'src/app/_services/admin.service';
 export class BankEditComponent implements OnInit {
   bank: Bank;
   bankUpdateForm: FormGroup;
+  bankModerator: Role;
+  modalRef?: BsModalRef;
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private adminService: AdminService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private bsmodalService: BsModalService
   ) {}
 
   ngOnInit(): void {
@@ -48,18 +53,9 @@ export class BankEditComponent implements OnInit {
     });
   }
 
-  addRole(ngForm: NgForm) {
-    this.bank.moderators.push({
-      type: 'BankModerator',
-      userId: 0,
-      userName: '',
-    });
-    ngForm.form.markAsDirty();
-  }
-
-  removeRole(ngForm: NgForm, index: number) {
-    this.bank.moderators.splice(index, 1);
-    ngForm.form.markAsDirty();
+  openModal(template: TemplateRef<any>) {
+    this.bankModerator = new Role('BankModerator');
+    this.modalRef = this.bsmodalService.show(template);
   }
 
   updateBank() {
@@ -72,16 +68,22 @@ export class BankEditComponent implements OnInit {
       });
   }
 
-  updateRoles(ngForm: NgForm) {
+  addRole() {
     this.adminService
-      .updateBankRoles({
-        bankId: this.bank.id,
-        moderators: this.bank.moderators,
-      })
+      .addBankRole(this.bankModerator, this.bank.id)
       .subscribe((response) => {
         this.bank = JSON.parse(JSON.stringify(response));
-        ngForm.reset();
-        this.toastr.success('Roles Updated');
+        this.toastr.success('Role Added');
+        this.modalRef.hide();
+      });
+  }
+
+  removeRole(role: Role) {
+    this.adminService
+      .removeBankRole(role, this.bank.id)
+      .subscribe((response) => {
+        this.bank = JSON.parse(JSON.stringify(response));
+        this.toastr.success('Role removed');
       });
   }
 }

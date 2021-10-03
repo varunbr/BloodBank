@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
+import { Role } from 'src/app/_modals/admin';
 import { Bank } from 'src/app/_modals/bank';
 import { User } from 'src/app/_modals/user';
 import { AccountService } from 'src/app/_services/account.service';
@@ -16,12 +18,15 @@ import { ModerateService } from 'src/app/_services/moderate.service';
 export class BankUpdateComponent implements OnInit {
   bank: Bank;
   currentUser: User;
+  bankModerator: Role;
+  modalRef?: BsModalRef;
 
   constructor(
     private route: ActivatedRoute,
     private moderateService: ModerateService,
     private toastr: ToastrService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private bsmodalService: BsModalService
   ) {}
 
   ngOnInit(): void {
@@ -39,18 +44,28 @@ export class BankUpdateComponent implements OnInit {
     });
   }
 
-  addRole(ngForm: NgForm) {
-    this.bank.moderators.push({
-      type: 'BankModerator',
-      userId: 0,
-      userName: '',
-    });
-    ngForm.form.markAsDirty();
+  openModal(template: TemplateRef<any>) {
+    this.bankModerator = new Role('BankModerator');
+    this.modalRef = this.bsmodalService.show(template);
   }
 
-  removeRole(ngForm: NgForm, index: number) {
-    this.bank.moderators.splice(index, 1);
-    ngForm.form.markAsDirty();
+  addRole() {
+    this.moderateService
+      .addBankRole(this.bankModerator, this.bank.id)
+      .subscribe((response) => {
+        this.bank = JSON.parse(JSON.stringify(response));
+        this.toastr.success('Role Added');
+        this.modalRef.hide();
+      });
+  }
+
+  removeRole(role: Role) {
+    this.moderateService
+      .removeBankRole(role, this.bank.id)
+      .subscribe((response) => {
+        this.bank = JSON.parse(JSON.stringify(response));
+        this.toastr.success('Role removed');
+      });
   }
 
   updateBlood(ngForm: NgForm) {
@@ -60,19 +75,6 @@ export class BankUpdateComponent implements OnInit {
         this.bank = JSON.parse(JSON.stringify(response));
         ngForm.reset();
         this.toastr.success('Blood Data Updated');
-      });
-  }
-
-  updateRoles(ngForm: NgForm) {
-    this.moderateService
-      .updateBankRoles({
-        bankId: this.bank.id,
-        moderators: this.bank.moderators,
-      })
-      .subscribe((response) => {
-        this.bank = JSON.parse(JSON.stringify(response));
-        ngForm.reset();
-        this.toastr.success('Roles Updated');
       });
   }
 

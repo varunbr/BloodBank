@@ -1,3 +1,4 @@
+import { Role } from './admin';
 import { BaseModal } from './modal';
 
 export interface Bank extends BaseModal {
@@ -14,11 +15,7 @@ export interface Bank extends BaseModal {
   postalCode: string;
   bloodGroups: BloodGroup[];
   role: string;
-  moderators: {
-    userId: number;
-    userName: string;
-    type: string;
-  }[];
+  moderators: Role[];
 }
 
 export interface BloodGroup {

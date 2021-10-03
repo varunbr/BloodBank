@@ -40,13 +40,29 @@ export class ModerateService extends BasePageService<Bank, BankParams> {
     );
   }
 
-  updateBankRoles(body) {
-    return this.http.put<Bank>(this.baseUrl + '/bank-role', body).pipe(
-      map((response) => {
-        this.cacheModal(response);
-        return response;
+  addBankRole(body, bankId: number) {
+    return this.http
+      .post<Bank>(this.baseUrl + '/bank-role/' + bankId, body)
+      .pipe(
+        map((response) => {
+          this.cacheModal(response);
+          return response;
+        })
+      );
+  }
+
+  removeBankRole(body, bankId: number) {
+    return this.http
+      .delete<Bank>(this.baseUrl + '/bank-role/' + bankId, {
+        body: body,
+        responseType: 'json',
       })
-    );
+      .pipe(
+        map((response) => {
+          this.cacheModal(response);
+          return response;
+        })
+      );
   }
 
   changePhoto(fileToUpload: File, bank: Bank) {

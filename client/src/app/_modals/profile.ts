@@ -13,4 +13,5 @@ export interface UserProfile {
   state: string;
   country: string;
   postalCode: string;
+  available: boolean;
 }

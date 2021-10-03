@@ -1,26 +1,25 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { AdminRole, AdminRoleParams } from '../_modals/admin';
+import { Role, RoleParams } from '../_modals/admin';
 import { BasePageService } from './base-page.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdministratorService extends BasePageService<
-  AdminRole,
-  AdminRoleParams
+  Role,
+  RoleParams
 > {
   baseUrl = environment.apiUrl + 'admin/roles';
 
   constructor(http: HttpClient) {
     super(http, false);
-    this.params = new AdminRoleParams();
+    this.params = new RoleParams();
   }
 
   resetParams() {
-    this.params = new AdminRoleParams();
+    this.params = new RoleParams();
   }
 
   addHttpParams(httpParams: HttpParams): HttpParams {
@@ -31,12 +30,12 @@ export class AdministratorService extends BasePageService<
     return httpParams;
   }
 
-  addRole(adminRole: AdminRole) {
-    return this.http.post<AdminRole>(this.baseUrl, adminRole);
+  addRole(adminRole: Role) {
+    return this.http.post<Role>(this.baseUrl, adminRole);
   }
 
   removeRole(adminRole) {
-    return this.http.delete<AdminRole>(this.baseUrl, {
+    return this.http.delete<Role>(this.baseUrl, {
       body: adminRole,
       responseType: 'json',
     });

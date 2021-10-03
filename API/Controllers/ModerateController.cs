@@ -61,31 +61,53 @@ namespace API.Controllers
             return await GetBank(updateDto.BankId);
         }
 
-        [HttpPut("bank-role"), Authorize(Roles = "BankAdmin")]
-        public async Task<ActionResult> UpdateBankRoles(BankRoleUpdateDto updateDto)
+        [HttpPost("bank-role/{bankId}"), Authorize(Roles = "BankAdmin")]
+        public async Task<ActionResult> AddBankRole(RoleDto roleDto, int bankId)
         {
             var userId = HttpContext.User.GetUserId();
+            var roleUserId = await _uow.UserRepository.GetUserIdByUserName(roleDto.UserName);
 
-            if (!await _uow.BankRepository.IsBankAdmin(updateDto.BankId, userId))
+            if (!await _uow.BankRepository.IsBankAdmin(bankId, userId))
                 return BadRequest("You are not admin for this bank!");
 
-            if (!Validator.ValidateBankRole(updateDto))
-                return BadRequest("Invalid Role Type.");
+            if (!Util.GetBankRoles().Contains(roleDto.Role))
+                return BadRequest("Invalid Role.");
 
-            if (updateDto.Moderators.Count != updateDto.Moderators.GroupBy(u => u.UserName, StringComparer.OrdinalIgnoreCase).Count())
-                return BadRequest("Duplicate users not allowed.");
+            if (await _uow.BankRepository.IsBankModerator(bankId, roleUserId))
+                return BadRequest("User already in role.");
 
-            var moderators = updateDto.Moderators.Select(m => m.UserName).ToList();
-            var existingUsers = await _uow.UserRepository.GetUserNames(moderators);
-            if (moderators.Count != existingUsers.Count)
-            {
-                var nonExistingUsers = moderators.Except(existingUsers, StringComparer.OrdinalIgnoreCase);
-                return BadRequest($"The user(s) {string.Join(", ", nonExistingUsers.ToArray())} are not available.");
-            }
+            await _uow.RoleRepository.AddBankRole(roleDto.Role, bankId, roleUserId);
 
-            return await _uow.RoleRepository.UpdateBankRoles(updateDto, userId) ?
-                Ok(await _uow.BankRepository.GetBankForModeration(updateDto.BankId, userId)) :
-                BadRequest("Failed to update roles");
+            if (!await _uow.SaveChanges()) 
+                return BadRequest("Failed to add role.");
+
+            await _uow.RoleRepository.UpdateUserRole(roleUserId, roleDto.Role);
+            return Ok(await _uow.BankRepository.GetBankForModeration(bankId, userId));
+        }
+
+        [HttpDelete("bank-role/{bankId}"), Authorize(Roles = "BankAdmin")]
+        public async Task<ActionResult> RemoveBankRole(RoleDto roleDto, int bankId)
+        {
+            var userId = HttpContext.User.GetUserId();
+            var userName = HttpContext.User.GetUserName();
+            var roleUserId = await _uow.UserRepository.GetUserIdByUserName(roleDto.UserName);
+
+            if (!await _uow.BankRepository.IsBankAdmin(bankId, userId))
+                return BadRequest("You are not admin for this bank!");
+
+            if (!Util.GetBankRoles().Contains(roleDto.Role))
+                return BadRequest("Invalid Role.");
+
+            if (roleDto.UserName.Equals(userName, StringComparison.OrdinalIgnoreCase))
+                return BadRequest("You cannot remove your role.");
+
+            await _uow.RoleRepository.RemoveBankRole(roleDto.Role, bankId, roleUserId);
+
+            if (!await _uow.SaveChanges())
+                return BadRequest("Failed to add role.");
+
+            await _uow.RoleRepository.UpdateUserRole(roleUserId, roleDto.Role, false);
+            return Ok(await _uow.BankRepository.GetBankForModeration(bankId, userId));
         }
 
         [HttpPost("{bankId}/change-photo"), Authorize(Roles = "BankAdmin")]
