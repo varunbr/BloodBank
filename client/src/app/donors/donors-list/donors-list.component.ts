@@ -28,6 +28,8 @@ export class DonorsListComponent
   }
 
   openModal(template: TemplateRef<any>) {
-    this.modalRef = this.bsmodalService.show(template, {});
+    this.modalRef = this.bsmodalService.show(template, {
+      animated: true,
+    });
   }
 }
