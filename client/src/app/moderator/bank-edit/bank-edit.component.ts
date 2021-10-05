@@ -55,7 +55,9 @@ export class BankEditComponent implements OnInit {
 
   openModal(template: TemplateRef<any>) {
     this.bankModerator = new Role('BankModerator');
-    this.modalRef = this.bsmodalService.show(template);
+    this.modalRef = this.bsmodalService.show(template,{
+      animated: true,
+    });
   }
 
   updateBank() {

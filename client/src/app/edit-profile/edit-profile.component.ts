@@ -34,7 +34,6 @@ export class EditProfileComponent implements OnInit {
   }
 
   initilizeForm() {
-    console.log(this.user);
     this.profileUpdateForm = this.fb.group({
       id: [this.user.id],
       name: [this.user.name, Validators.required],

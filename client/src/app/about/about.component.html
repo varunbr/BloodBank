@@ -19,6 +19,10 @@
                         <span class="text-secondary">9844288854</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                        <h6 class="mb-0"><i class="fa fa-globe"></i> Website</h6>
+                        <a class="text-secondary" href="https://varunbr.github.io/">https://varunbr.github.io</a>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                         <h6 class="mb-0"><i class="fa fa-github"></i> Sorce Code</h6>
                         <a class="text-secondary" href="https://github.com/varunbr/BloodBank">BloodBank</a>
                     </li>
@@ -43,7 +47,7 @@
             </div>
             <div class="card-body">
                 <div class="mt-2">
-                    <table class="table table-hover">
+                    <table class="table table-responsive-sm table-hover">
                         <thead class="text-primary">
                             <tr>
                                 <th scope="col"></th>
@@ -57,7 +61,7 @@
                             <tr *ngFor="let user of roles; let i = index">
                                 <td class="d-flex justify-content-center">
                                     <img src="{{user.photoUrl || './assets/images/profile.png'}}"
-                                        class="img-fluid rounded-circle mb-2 mb-md-0" style="max-height: 50px;" />
+                                        class="rounded-circle mb-2 mb-md-0" style="max-height: 50px;" />
                                 </td>
                                 <td class="align-middle">
                                     {{user.name}}
@@ -151,12 +155,12 @@
                         <tr>
                             <th scope="row">3</th>
                             <td>Angular</td>
-                            <td>12.0</td>
+                            <td>12.2</td>
                         </tr>
                         <tr>
                             <th scope="row">4</th>
                             <td>Ngx Bootstrap</td>
-                            <td>7.0</td>
+                            <td>7.1</td>
                         </tr>
                     </tbody>
                 </table>
@@ -180,4 +184,3 @@
         </div>
     </div>
 </div>
-

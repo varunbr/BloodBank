@@ -45,7 +45,9 @@ export class AdministrationComponent
 
   openModal(template: TemplateRef<any>) {
     this.adminRole = new Role('Moderator');
-    this.modalRef = this.bsmodalService.show(template);
+    this.modalRef = this.bsmodalService.show(template, {
+      animated: true,
+    });
   }
 
   addRole() {

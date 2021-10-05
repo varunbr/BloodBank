@@ -7,7 +7,7 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { debounceTime, first, map, switchMap } from 'rxjs/operators';
 import { AccountService } from '../_services/account.service';
 
 @Directive({
@@ -37,12 +37,16 @@ export function validateUserExistence(
   return (control: AbstractControl) => {
     if (control?.value && control.dirty) {
       if (currentUserName === control.value) return of(null);
-      return accountService.userExist(control.value).pipe(
-        map((response) => {
-          if (response.toString() === exist.toString()) return null;
-          return { alreadyExist: response };
-        })
-      );
+      return control.valueChanges
+        .pipe(
+          debounceTime(2000),
+          switchMap((value) => accountService.userExist(value)),
+          map((response) => {
+            if (response.toString() === exist.toString()) return null;
+            return { alreadyExist: response };
+          })
+        )
+        .pipe(first());
     }
     return of(null);
   };
