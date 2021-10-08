@@ -33,6 +33,7 @@ import { TestErrorsComponent } from './errors/test-errors/test-errors.component'
 import { HasRoleDirective } from './directives/has-role.directive';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { FormDateInputComponent } from './forms/form-date-input/form-date-input.component';
+import { PageNotFoundComponent } from './errors/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { FormDateInputComponent } from './forms/form-date-input/form-date-input.
     HasRoleDirective,
     EditProfileComponent,
     FormDateInputComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,

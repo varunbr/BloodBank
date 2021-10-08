@@ -16,6 +16,7 @@ import { TestErrorsComponent } from './errors/test-errors/test-errors.component'
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { AuthGuard } from './guards/auth.guard';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { PageNotFoundComponent } from './errors/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -65,7 +66,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'about', component: AboutComponent },
   { path: 'server-error', component: ServerErrorComponent },
-  { path: '**', component: HomeComponent },
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
