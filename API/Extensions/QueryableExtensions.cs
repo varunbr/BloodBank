@@ -92,7 +92,7 @@ namespace API.Extensions
                 query = query.Where(r => r.UserId == roleParams.UserId);
 
             if (!string.IsNullOrEmpty(roleParams.UserName))
-                query = query.Where(r => r.User.UserName == roleParams.UserName);
+                query = query.Where(r => r.User.UserName == roleParams.UserName.ToLower());
 
             if (!string.IsNullOrEmpty(roleParams.Name))
                 query = query.Where(r => r.User.Name.Contains(roleParams.Name));

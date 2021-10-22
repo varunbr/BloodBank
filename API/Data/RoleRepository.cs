@@ -78,7 +78,7 @@ namespace API.Data
         public async Task<RoleDto> GetAdminRole(RoleDto roleDto)
         {
             var query = DataContext.UserRoles.AsQueryable();
-            query = query.Where(r => r.Role.Name == roleDto.Role && r.User.UserName == roleDto.UserName);
+            query = query.Where(r => r.Role.Name == roleDto.Role && r.User.UserName == roleDto.UserName.ToLower());
             return await query.ProjectTo<RoleDto>(Mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
         }

@@ -24,7 +24,7 @@ namespace API.Data
 
         public async Task<int> GetUserIdByUserName(string userName)
         {
-            return await DataContext.Users.Where(u => u.UserName == userName)
+            return await DataContext.Users.Where(u => u.UserName == userName.ToLower())
                 .Select(u => u.Id)
                 .SingleAsync();
         }
@@ -42,7 +42,7 @@ namespace API.Data
         }
         public async Task<bool> UserExist(string userName)
         {
-            return await DataContext.Users.AnyAsync(u => u.UserName == userName);
+            return await DataContext.Users.AnyAsync(u => u.UserName == userName.ToLower());
         }
         #endregion
 
