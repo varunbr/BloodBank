@@ -44,12 +44,12 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://blood-bank-demo.herokuapp.com/)
+[![Product Name Screen Shot][product-screenshot]](https://varunbr.github.io/BloodBank/)
 
 <p align="center">
     This Web App is about finding required blood group either by searching Donors or Blood Bank.
     <br />
-    <a href="https://blood-bank-demo.herokuapp.com/">View Demo</a>
+    <a href="https://varunbr.github.io/BloodBank/">View Demo</a>
     ·
     <a href="#screenshots-and-working-process">View Screenshots</a>
 </p>
@@ -131,7 +131,7 @@ Admin has top access to site, they can add or remove roles of Admin or Moderator
 - Any update to an item will automatically update all cached items with the same id.
 - Donors shown here are based on their interest, They can always opt-out or opt-in from this anytime.
 
-[![Donor List Screen Shot][donor-list]](https://blood-bank-demo.herokuapp.com/)
+[![Donor List Screen Shot][donor-list]](https://varunbr.github.io/BloodBank/)
 
 <hr/>
 
@@ -139,7 +139,7 @@ Admin has top access to site, they can add or remove roles of Admin or Moderator
 
 - A modal is shown with more details of the donor.
 
-[![Donor Detail Screen Shot][donor-detail]](https://blood-bank-demo.herokuapp.com/)
+[![Donor Detail Screen Shot][donor-detail]](https://varunbr.github.io/BloodBank/)
 
 <hr/>
 
@@ -147,7 +147,7 @@ Admin has top access to site, they can add or remove roles of Admin or Moderator
 
 - All registered users can search for blood banks by using Address, Blood Group and Bank Name.
 
-[![Bank List Screen Shot][bank-list]](https://blood-bank-demo.herokuapp.com/)
+[![Bank List Screen Shot][bank-list]](https://varunbr.github.io/BloodBank/)
 
 <hr/>
 
@@ -155,7 +155,7 @@ Admin has top access to site, they can add or remove roles of Admin or Moderator
 
 - A modal is shown with more details of the bank.
 
-[![Bank Detail Screen Shot][bank-detail]](https://blood-bank-demo.herokuapp.com/)
+[![Bank Detail Screen Shot][bank-detail]](https://varunbr.github.io/BloodBank/)
 
 <hr/>
 
@@ -164,7 +164,7 @@ Admin has top access to site, they can add or remove roles of Admin or Moderator
 - This page is shown only for users with role Bank Admin and Bank Moderator.
 - User should be in role Bank Admin or Bank Moderator of each bank to be shown.
 
-[![Moderate List Screen Shot][moderate-list]](https://blood-bank-demo.herokuapp.com/)
+[![Moderate List Screen Shot][moderate-list]](https://varunbr.github.io/BloodBank/)
 
 <hr/>
 
@@ -173,7 +173,7 @@ Admin has top access to site, they can add or remove roles of Admin or Moderator
 - Bank Admin or Bank Moderator can view this page from Moderate List page.
 - Bank Moderator can only update blood data of bank where as Bank Admin can change roles for bank and update bank photo.
 
-[![Bank Update Screen Shot][bank-update]](https://blood-bank-demo.herokuapp.com/)
+[![Bank Update Screen Shot][bank-update]](https://varunbr.github.io/BloodBank/)
 
 <hr/>
 
@@ -182,7 +182,7 @@ Admin has top access to site, they can add or remove roles of Admin or Moderator
 - Moderator can view this page for moderating Banks.
 - They can search for banks or register new banks from this page.
 
-[![Admin List Screen Shot][admin-list]](https://blood-bank-demo.herokuapp.com/)
+[![Admin List Screen Shot][admin-list]](https://varunbr.github.io/BloodBank/)
 
 <hr/>
 
@@ -191,7 +191,7 @@ Admin has top access to site, they can add or remove roles of Admin or Moderator
 - Moderator can edit all the bank details from this page.
 - They can modify bank user roles.
 
-[![Bank Edit Screen Shot][bank-edit]](https://blood-bank-demo.herokuapp.com/)
+[![Bank Edit Screen Shot][bank-edit]](https://varunbr.github.io/BloodBank/)
 
 <hr/>
 
@@ -200,7 +200,7 @@ Admin has top access to site, they can add or remove roles of Admin or Moderator
 - This page is for Admin which has highest level of access.
 - Admin can add or remove roles of Moderator or Admin itself.
 
-[![Administration Screen Shot][administration]](https://blood-bank-demo.herokuapp.com/)
+[![Administration Screen Shot][administration]](https://varunbr.github.io/BloodBank/)
 
 <hr/>
 
