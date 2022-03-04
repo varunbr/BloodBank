@@ -3,7 +3,7 @@ WORKDIR /src
 COPY client/package.json .
 RUN npm install
 COPY client .
-RUN npm run build
+RUN npm run build -- --configuration="staging"
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src

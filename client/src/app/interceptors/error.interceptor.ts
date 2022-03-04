@@ -26,6 +26,9 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error) => {
         switch (error.status) {
+          case 0:
+            this.toastr.error('Unable to reach server!');
+            break;
           case 400:
             if (error.error.errors) {
               const modelStateErrors = [];
